@@ -12,6 +12,10 @@ This is a collection of the various olympiad problems I have solved
 
 [The Baltic Olympiad in Informatics](https://boi2018.progolymp.se/)
 
+### CEOI
+
+[The Central-European Olympiad in Informatics](http://ceoi.inf.elte.hu/)
+
 ### IOI
 
 [The International Olympiad in Informatics](https://ioinformatics.org/)
@@ -26,4 +30,4 @@ This is a collection of the various olympiad problems I have solved
 
 ### SACO
 
-[The South African Computer Olympiad](https://olympiad.org.za)
+[The South African Computer Olympiad](https://olympiad.org.za/)
