@@ -11,21 +11,15 @@ double dp2[500001], ans = 0;
 
 void dfs(int node) {
     dp[node] = 1;
-    dp2[node] = 0;
     for (int i : graph[node]) {
         dfs(i);
         dp[node] += dp[i];
-        dp2[node] = max(dp2[node], dp2[i]);
     }
-    if (dp[node] > k) {
-        for (int i : graph[node]) {
-            if (dp[i] > k) dp2[node] = max(dp2[node], dp2[i]);
-            else dp2[node] = max(dp2[node], dp[i] / (dp[node] - 1.0));
-        }
-    } else {
-        dp2[node] = 0;
-    }
-    // cout << dp2[node] << endl;
+
+    dp2[node] = (graph[node].size() == 0 ? INT_MAX : 0);
+    for (int i : graph[node]) dp2[node] = max(dp2[node], min(dp2[i], dp[i] / (dp[node] - 1.0)));
+
+    if (dp[node] > k) ans = max(ans, dp2[node]);
 }
 
 int main() {
@@ -40,6 +34,6 @@ int main() {
     }
     dfs(1);
 
-    cout << fixed << setprecision(10) << dp2[1] << '\n';
+    cout << fixed << setprecision(10) << ans << '\n';
     return 0;
 }
