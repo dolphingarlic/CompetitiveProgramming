@@ -15,7 +15,7 @@ int main() {
     cin >> n;
 
     FOR(i, 0, n) cin >> a[i];
-    FOR(i, 0, n - sequence.size()) {
+    FOR(i, 0, n - sequence.size() + 1) {
         int delta = a[i] - sequence[0];
         bool possible = true;
         FOR(j, 0, sequence.size()) if (a[i + j] - sequence[j] != delta) {
