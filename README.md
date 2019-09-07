@@ -20,6 +20,10 @@ This is a collection of the various olympiad problems I have solved
 
 [The International Olympiad in Informatics](https://ioinformatics.org/)
 
+### IZhO
+
+[The International Zhautykov Olympiad](https://izho.kz/)
+
 ### JOI
 
 [The Japanese Olympiad in Informatics](https://www.ioi-jp.org/)
