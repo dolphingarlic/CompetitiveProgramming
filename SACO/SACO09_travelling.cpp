@@ -5,14 +5,14 @@ using namespace std;
 
 int c, t, f, ans = INT_MAX;
 vector<int> graph[5001];
-int min_dist[9][5001];
-bool visited[9];
+int min_dist[8][5001];
+bool visited[8];
 
-void dfs(int node = 0, int len = 0, int depth = 0) {
+void dfs(int node = 0, int len = 0, int depth = 1) {
     visited[node] = true;
     if (depth == t) ans = min(ans, len + min_dist[node][0]);
     else {
-        FOR(i, 1, t + 1) {
+        FOR(i, 1, t) {
             if (!visited[i]) dfs(i, len + min_dist[node][i], depth + 1);
         }
     }
@@ -30,11 +30,11 @@ int main() {
         graph[u].push_back(v);
     }
 
-    FOR(i, 0, t + 1) {
+    FOR(i, 0, t) {
         queue<int> q;
         q.push(i);
         min_dist[i][i] = 1;
-        while (!q.size()) {
+        while (q.size()) {
             int curr = q.front();
             q.pop();
             for (int j : graph[curr]) {
