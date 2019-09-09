@@ -1,17 +1,17 @@
+#include "game.h"
 #include <bits/stdc++.h>
-#pragma GCC Optimize("O3")
-#pragma GCC Optimize("unroll-loops")
+typedef long long ll;
 using namespace std;
 
-int gcd(int x, int y) { return !y ? x : gcd(y, x % y); }
+ll gcd(ll x, ll y) { return !y ? x : gcd(y, x % y); }
 int rnd() { return ((rand() % (1 << 15)) << 16) + (rand() % (1 << 15)); }
 
 struct TreapNode {
     TreapNode *l, *r;
     int pos, key, mn, mx;
-    int val, g;
+    ll val, g;
     
-    TreapNode(int position, int value) {
+    TreapNode(int position, ll value) {
         l = r = nullptr;
         mn = mx = pos = position;
         key = rnd();
@@ -75,7 +75,7 @@ struct Treap {
         return false;
     }
 
-    void update(TreapNode *t, int pos, int val) {
+    void update(TreapNode *t, int pos, ll val) {
         if (t->pos == pos) {
             t->val = val;
             t->update();
@@ -86,7 +86,7 @@ struct Treap {
         t->update();
     }
 
-    void insert(int pos, int val) {
+    void insert(int pos, ll val) {
         if (find(pos)) update(root, pos, val);
         else {
             TreapNode *l, *r;
@@ -95,16 +95,16 @@ struct Treap {
         }
     }
 
-    int query(TreapNode *t, int st, int en) {
+    ll query(TreapNode *t, int st, int en) {
         if (t->mx < st || en < t->mn) return 0;
         if (st <= t->mn && t->mx <= en) return t->g;
         
-        int ans = (st <= t->pos && t->pos <= en ? t->val : 0);
+        ll ans = (st <= t->pos && t->pos <= en ? t->val : 0);
         if (t->l) ans = gcd(ans, query(t->l, st, en));
         if (t->r) ans = gcd(ans, query(t->r, st, en));
         return ans;
     }
-    int query(int st, int en) {
+    ll query(int st, int en) {
         if (!root) return 0;
         return query(root, st, en);
     }
@@ -128,13 +128,13 @@ struct Segtree {
         if (!r) r = new Segtree((lo + hi) / 2 + 1, hi);
     }
     void fix(int pos) {
-        int val = 0;
+        ll val = 0;
         if (l) val = gcd(val, l->treap.query(pos, pos));
         if (r) val = gcd(val, r->treap.query(pos, pos));
         treap.insert(pos, val);
     }
 
-    void update(int x, int y, int val) {
+    void update(int x, int y, ll val) {
         if (hi < x || x < lo) return;
         if (lo == hi) {
             treap.insert(y, val);
@@ -151,11 +151,11 @@ struct Segtree {
         fix(y);
     }
 
-    int query(int t, int b, int st, int en) {
+    ll query(int t, int b, int st, int en) {
         if (hi < t || b < lo) return 0;
         if (t <= lo && hi <= b) return treap.query(st, en);
 
-        int ans = 0;
+        ll ans = 0;
         if (l) ans = gcd(ans, l->query(t, b, st, en));
         if (r) ans = gcd(ans, r->query(t, b, st, en));
         return ans;
@@ -169,43 +169,8 @@ void init(int R, int C) {
     segtree = Segtree(0, R - 1);
 }
 
-void update(int P, int Q, int K) { segtree.update(P, Q, K); }
+void update(int P, int Q, ll K) { segtree.update(P, Q, K); }
 
-int calculate(int P, int Q, int U, int V) {
+ll calculate(int P, int Q, int U, int V) {
     return segtree.query(P, U, Q, V);
-}
-
-int main() {
-    ios_base::sync_with_stdio(0);
-    cin.tie(0);
-
-    int R, C;
-    cin >> R >> C;
-    init(R, C);
-
-    for (int i = 0; i < R; i++) for (int j = 0; j < C; j++) {
-        int x;
-        cin >> x;
-        update(i, j, x);
-    }
-
-    int N;
-    cin >> N;
-    while (N--) {
-        char t;
-        cin >> t;
-        if (t == 'u') {
-            int P, Q;
-            int K;
-            cin >> P >> Q >> K;
-            P--, Q--;
-            update(P, Q, K);
-        } else {
-            int P, Q, U, V;
-            cin >> P >> Q >> U >> V;
-            P--, Q--, U--, V--;
-            cout << calculate(P, Q, U, V) << '\n';
-        }
-    }
-    return 0;
 }
