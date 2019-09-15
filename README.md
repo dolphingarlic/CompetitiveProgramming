@@ -35,3 +35,7 @@ This is a collection of the various olympiad problems I have solved
 ### SACO
 
 [The South African Computer Olympiad](https://olympiad.org.za/)
+
+### USACO
+
+[The USA Computing Olympiad](http://usaco.org/)
