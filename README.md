@@ -16,6 +16,10 @@ This is a collection of the various olympiad problems I have solved
 
 [The Central-European Olympiad in Informatics](http://ceoi.inf.elte.hu/)
 
+### COI
+
+[The Croatian Olympiad in Informatics](http://hsin.hr/)
+
 ### IOI
 
 [The International Olympiad in Informatics](https://ioinformatics.org/)
