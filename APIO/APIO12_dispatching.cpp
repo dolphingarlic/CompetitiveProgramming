@@ -5,7 +5,7 @@ using namespace std;
 
 struct Node {
     priority_queue<int> *pq;
-    int s;
+    ll s;
 };
 
 int n, m;
@@ -15,7 +15,7 @@ pair<int, int> ninja[100001];
 Node dp[100001];
 
 void dfs(int node) {
-    int mx = -1, mx_child = -1;
+    int mx = 0, mx_child = 0;
     for (int i : graph[node]) {
         dfs(i);
         if (dp[i].pq->size() > mx) {
@@ -24,17 +24,13 @@ void dfs(int node) {
         }
     }
 
-    if (mx != -1) {
+    if (mx) {
         dp[node].pq = dp[mx_child].pq;
         dp[node].s = dp[mx_child].s;
     } else dp[node].pq = new priority_queue<int>();
 
     dp[node].pq->push(ninja[node].first);
     dp[node].s += ninja[node].first;
-    if (dp[node].s > m) {
-        dp[node].s -= dp[node].pq->top();
-        dp[node].pq->pop();
-    }
     for (int i : graph[node]) {
         if (i != mx_child) {
             while (dp[i].pq->size()) {
@@ -43,12 +39,12 @@ void dfs(int node) {
 
                 dp[node].pq->push(j);
                 dp[node].s += j;
-                if (dp[node].s > m) {
-                    dp[node].s -= dp[node].pq->top();
-                    dp[node].pq->pop();
-                }
             }
         }
+    }
+    while (dp[node].s > m) {
+        dp[node].s -= dp[node].pq->top();
+        dp[node].pq->pop();
     }
 
     ans = max(ans, ninja[node].second * (ll)dp[node].pq->size());
