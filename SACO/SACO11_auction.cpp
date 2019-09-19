@@ -25,8 +25,6 @@ void dfs(int node) {
     dp[node][0] = sm;
     if (pq.size() && pq.top().first > 0) sm += pq.top().first;
     dp[node][1] = sm;
-
-    // cout << node << ' ' << dp[node][0] << ' ' << dp[node][1] << '\n';
 }
 
 int main() {
