@@ -12,6 +12,10 @@ This is a collection of the various olympiad problems I have solved
 
 [The Baltic Olympiad in Informatics](https://boi2018.progolymp.se/)
 
+### BkOI
+
+[The Balkan Olympiad in Informatics](https://boi2019.epy.gr/)
+
 ### CEOI
 
 [The Central-European Olympiad in Informatics](http://ceoi.inf.elte.hu/)
@@ -31,6 +35,10 @@ This is a collection of the various olympiad problems I have solved
 ### JOI
 
 [The Japanese Olympiad in Informatics](https://www.ioi-jp.org/)
+
+### NOI
+
+[The National Olympiad in Informatics (China)](http://www.noi.cn/)
 
 ### POI
 
