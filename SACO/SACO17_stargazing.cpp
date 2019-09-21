@@ -29,7 +29,6 @@ int find(int a) {
     return a;
 }
 void onion(int a, int b) {
-    if (sz[find(a)] > sz[find(b)]) swap(a, b);
     if (find(a) != find(b)) {
         sz[find(b)] += sz[find(a)];
         component[find(a)] = component[find(b)];

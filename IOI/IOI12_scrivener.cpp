@@ -31,7 +31,6 @@ void UndoCommands(int U) {
 
 char GetLetter(int P) {
 	int curr = indx - 1, x = len_at[indx - 1] - P - 1;
-	// cout << curr << ' ' << x << '\n';
 	for (int i = 0; x > 0; i++) {
 		if (x & 1) curr = dp[i][curr];
 		x >>= 1;
