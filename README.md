@@ -36,9 +36,13 @@ This is a collection of the various olympiad problems I have solved
 
 [The Japanese Olympiad in Informatics](https://www.ioi-jp.org/)
 
-### NOI
+### NOI.cn
 
 [The National Olympiad in Informatics (China)](http://www.noi.cn/)
+
+### NOI.sg
+
+[The National Olympiad in Informatics (Singapore)](https://noisg.comp.nus.edu.sg/noi/)
 
 ### POI
 
