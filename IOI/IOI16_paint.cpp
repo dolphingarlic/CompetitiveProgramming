@@ -1,4 +1,4 @@
-// #include "paint.h"
+#include "paint.h"
 #include <bits/stdc++.h>
 
 using namespace std;
@@ -105,14 +105,4 @@ string solve_puzzle(string s_in, vector<int> c_in) {
             res += '_';
     }
     return res;
-}
-
-int main() {
-    string s;
-    cin >> s;
-    int k;
-    cin >> k;
-    vector<int> v(k);
-    for (int i = 0; i < k; i++) cin >> v[i];
-    cout << solve_puzzle(s, v);
 }

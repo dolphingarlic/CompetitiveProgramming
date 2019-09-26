@@ -1,81 +1,70 @@
+#include "robots.h"
 #include <bits/stdc++.h>
-#pragma GCC optimize("O3")
-#define FOR(i, x, y) for(int i = x; i < y; i++)
-typedef long long ll;
 using namespace std;
-
-int a, b, t, x[50000], y[50000];
-pair<int, pair<int, int>> by_weight[1000000], by_size[1000000];
-bool visited[1000000];
-
-bool check(int s) {
-    fill(visited, visited + t, false);
-    
-    int cnt = 0;
-
-    priority_queue<pair<int, int>> light_enough_toys;
-    int ptr = 0;
-    FOR(i, 0, a) {
-        while (ptr < t && by_weight[ptr].first < x[i]) {
-            light_enough_toys.push(by_weight[ptr].second);
-            ptr++;
-        }
-
-        for (int j = 0; j < s && !light_enough_toys.empty(); j++) {
-            visited[light_enough_toys.top().second] = true;
-            cnt++;
-            light_enough_toys.pop();
-        }
+ 
+#define fi first
+#define se second
+#define pb push_back
+#define mp make_pair
+typedef pair<int, int> ii;
+ 
+const int len = 1e6+4;
+int wlim[len], slim[len], n, m, k;
+ii arr[len];
+vector<int> vec;
+priority_queue<int, vector<int>, greater<int> > pq;
+ 
+bool check(int x){
+    while (!pq.empty())
+        pq.pop();
+    vec.clear();
+ 
+    for (int i = k-1, j = n-1, rem = x; i >= 0; i--){
+        pq.push(arr[i].se);
+        if (j >= 0 && arr[i].fi < wlim[j])
+            rem--;
+        else
+            vec.pb(pq.top()), pq.pop();
+ 
+        if (!rem)
+            j--, rem = x;
     }
-
-    priority_queue<pair<int, int>> small_enough_toys;
-    ptr = 0;
-    FOR(i, 0, b) {
-        while (ptr < t && by_size[ptr].first < y[i]) {
-            if (!visited[by_size[ptr].second.second]) small_enough_toys.push(by_size[ptr].second);
-            ptr++;
-        }
-        
-        for (int j = 0; j < s && !small_enough_toys.empty(); j++) {
-            visited[small_enough_toys.top().second] = true;
-            cnt++;
-            small_enough_toys.pop();
-        }
+ 
+    sort(vec.begin(), vec.end());
+    for (int i = (int)vec.size()-1, j = m-1, rem = x; i >= 0; i--){
+        if (j < 0 || vec[i] >= slim[j])
+            return false;
+ 
+        rem--;
+        if (!rem)
+            j--, rem = x;
     }
-
-    return (cnt == t);
+ 
+    return true;
 }
-
-
-int main() {
-    ios_base::sync_with_stdio(false);
-    cin.tie(NULL);
-    
-    cin >> a >> b >> t;
-
-    FOR(i, 0, a) cin >> x[i];
-    FOR(i, 0, b) cin >> y[i];
-    sort(x, x + a), sort(y, y + b);
-
-    FOR(i, 0, t) {
-        int n, m;
-        cin >> n >> m;
-        if (n >= x[a - 1] && m >= y[b - 1]) return cout << "-1\n", 0;
-        by_size[i] = {m, {n, i}};
-        by_weight[i] = {n, {m, i}};
+ 
+int putaway(int A, int B, int T, int X[], int Y[], int W[], int S[]){
+    n = A, m = B, k = T;
+ 
+    for (int i = 0; i < n; i++)
+        wlim[i] = X[i];
+    for (int i = 0; i < m; i++)
+        slim[i] = Y[i];
+    for (int i = 0; i < k; i++)
+        arr[i] = mp(W[i], S[i]);
+ 
+    sort(wlim, wlim+n);
+    sort(slim, slim+m);
+    sort(arr, arr+k);
+ 
+    int l = 1, r = k, ans = -1;
+    while (l <= r){
+        int mid = (l+r)/2;
+        if (check(mid))
+            r = mid-1, ans = mid;
+        else
+            l = mid+1;
     }
-    sort(by_size, by_size + t), sort(by_weight, by_weight + t);
-
-    // Binary search for answer
-    int l = 1, r = t;
-    while (l != r) {
-        int mid = (l + r) / 2;
-        if (check(mid)) {
-            r = mid;
-        } else {
-            l = mid + 1;
-        }
-    }
-    cout << l << '\n';
-    return 0;
+ 
+    return ans;
 }

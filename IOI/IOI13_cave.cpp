@@ -15,7 +15,6 @@ void exploreCave(int N) {
         int res = tryCombination(S);
         if (res <= i && res != -1) known[i] = 0;
         else known[i] = 1;
-        // cout << known[i] << '\n';
  
         // Binary search for D[i]
         int l = 0, r = N - 1;
@@ -24,18 +23,12 @@ void exploreCave(int N) {
             fill(T, T + N, 1 - known[i]);
             fill(T + l, T + mid + 1, known[i]);
             FOR(j, 0, i) T[D[j]] = known[j];
-            // FOR(i, 0, N) cout << T[i] << ' '; cout << '\n';
             int res = tryCombination(T);
-            // cout << res << ' ' << mid << '\n';
             if (res <= i && res != -1) l = mid + 1;
             else r = mid;
         }
         D[i] = l;
-        // FOR(i, 0, N) cout << D[i] << ' ';
-        // cout << "\n\n";
     }
-    // FOR(i, 0, N) cout << known[i] << ' '; cout << '\n';
-    // FOR(i, 0, N) cout << D[i] << ' '; cout << '\n';
     int a[5001], b[5001];
     FOR(i, 0, N) {
         a[D[i]] = known[i];

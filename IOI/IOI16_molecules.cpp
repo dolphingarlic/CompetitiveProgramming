@@ -1,5 +1,5 @@
 #include <bits/stdc++.h>
-// #include "molecules.h"
+#include "molecules.h"
 #define FOR(i, x, y) for (int i = x; i < y; i++)
 using namespace std;
  
@@ -35,15 +35,4 @@ vector<int> find_subset(int l, int u, vector<int> w) {
 	}
  
 	return res;
-}
-
-int main() {
-    int n, l, u;
-    cin >> n >> l >> u;
-    vector<int> w(n);
-    FOR(i, 0, n) cin >> w[i];
-    vector<int> ans = find_subset(l, u, w);
-    cout << ans.size() << '\n';
-    for (int i : ans) cout << i << '\n';
-    return 0;
 }
