@@ -16,12 +16,12 @@ int main() {
     while (possible) {
         possible = false;
         FOR(i, 0, n) {
-            if (a[i] - b[i] > 1) {
+            if (a[i] - b[i] - 1) {
                 a[(i + 1) % n] += (a[i] - b[i]) / 2;
                 a[i] -= (a[i] - b[i]) / 2 * 2;
             }
         }
-        FOR(i, 0, n) possible |= (a[i] - b[i] > 1);
+        FOR(i, 0, n) possible |= (a[i] - b[i] - 1);
     }
 
     bool ans = true;
