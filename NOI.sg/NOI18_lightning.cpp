@@ -1,35 +1,39 @@
-#include <algorithm>
-#include <iostream>
+#include <bits/stdc++.h>
 using namespace std;
-#define MAXN 10000000
-
-int N;
-int x[MAXN], y[MAXN];
-int pos[MAXN], neg[MAXN];
-int cid[MAXN];
-
-bool cmp(int a, int b) {
-    if (neg[a] == neg[b]) return pos[a] > pos[b];
-    return neg[a] < neg[b];
+stack<pair<int, int> > s;
+inline int readInt() {
+    int x = 0;
+    char ch = getchar_unlocked();
+    bool s = 1;
+    while (ch < '0' || ch > '9') {
+        if (ch == '-') s = 0;
+        ch = getchar_unlocked();
+    }
+    while (ch >= '0' && ch <= '9') {
+        x = (x << 3) + (x << 1) + ch - '0';
+        ch = getchar_unlocked();
+    }
+    return s ? x : -x;
 }
 
 int main() {
-    ios_base::sync_with_stdio(0);
-    cin.tie(0);
-    cin >> N;
-    for (int i = 0; i < N; i++) {
-        cin >> x[i] >> y[i];
-        pos[i] = x[i] + y[i], neg[i] = x[i] - y[i];
-        cid[i] = i;
-    }
-    sort(cid, cid + N, cmp);
-    int mxpos = -1;
-    int ans = 0;
-    for (int i = 0; i < N; i++) {
-        if (pos[cid[i]] > mxpos) {
-            ans++;
-            mxpos = pos[cid[i]];
+    int n = readInt();
+    for (int i = 0; i < n; i++) {
+        int x = readInt();
+        int y = readInt();
+        bool add = 1;
+        while (s.size()) {
+            int tx = s.top().first, ty = s.top().second;
+            if (x - tx <= ty - y) {
+                add = 0;
+                break;
+            }
+            if (x - tx <= y - ty)
+                s.pop();
+            else
+                break;
         }
+        if (add) s.push({x, y});
     }
-    cout << ans << '\n';
+    printf("%d", (int)s.size());
 }

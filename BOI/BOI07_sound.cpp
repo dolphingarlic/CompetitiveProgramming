@@ -1,46 +1,34 @@
 #include <bits/stdc++.h>
-#pragma GCC optimize("O3")
 #define FOR(i, x, y) for (int i = x; i < y; i++)
-#define MAXN 1000001
+typedef long long ll;
 using namespace std;
 
-int n, m, c;
-int a[MAXN];
-pair<int, int> segtree[4 * MAXN];
-
-pair<int, int> query(int a, int b, int node = 1, int l = 1, int r = n) {
-    if (b < l || a > r) return {INT_MIN, INT_MAX};
-    if (l >= a && r <= b) return segtree[node];
-    int mid = (l + r) / 2;
-    pair<int, int> x = query(a, b, node * 2, l, mid), y = query(a, b, node * 2 + 1, mid + 1, r);
-    return {max(x.first, y.first), min(x.second, y.second)};
-}
-
-void build(int node = 1, int l = 1, int r = n) {
-    if (l == r) segtree[node] = {a[l], a[l]};
-    else {
-        int mid = (l + r) / 2;
-        build(node * 2, l, mid);
-        build(node * 2 + 1, mid + 1, r);
-        segtree[node] = {
-            max(segtree[node * 2].first, segtree[node * 2 + 1].first),
-            min(segtree[node * 2].second, segtree[node * 2 + 1].second)};
-    }
-}
+int a[1000000];
+vector<int> silence;
 
 int main() {
-    ios_base::sync_with_stdio(false);
-    cin.tie(NULL);
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
+    int n, m, c;
     cin >> n >> m >> c;
-    FOR(i, 1, n + 1) cin >> a[i];
-    build();
-    
-    vector<int> s;
-    FOR(i, 1, n - m + 2) {
-        pair<int, int> q = query(i, i + m - 1);
-        if (q.first - q.second <= c) s.push_back(i);
+
+    multiset<int> soft, loud;
+    FOR(i, 0, m) {
+        cin >> a[i];
+        soft.insert(a[i]);
+        loud.insert(-a[i]);
     }
-    if (s.size()) for (int i : s) cout << i << '\n';
-    else cout << "NONE";
+    if (-(*soft.begin() + *loud.begin()) <= c) silence.push_back(1);
+    FOR(i, m, n) {
+        cin >> a[i];
+        soft.erase(soft.find(a[i - m]));
+        loud.erase(loud.find(-a[i - m]));
+        soft.insert(a[i]);
+        loud.insert(-a[i]);
+        if (-(*soft.begin() + *loud.begin()) <= c) silence.push_back(i - m + 2);
+    }
+
+    if (silence.size()) for (int i : silence) cout << i << '\n';
+    else cout << "NONE\n";
     return 0;
 }
