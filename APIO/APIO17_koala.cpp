@@ -65,12 +65,10 @@ Uses 1 turn
 */
 int minValue(int N, int W) {
     fill(B, B + N, 0);
-    fill(R, R + N, 0);
     B[0] = 1;
     playRound(B, R);
     if (R[0] < 2) return 0;
     else for (int i = 1; i < N; i++) if (!R[i]) return i;
-    return -1;
 }
 
 /*
