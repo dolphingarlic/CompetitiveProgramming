@@ -1,6 +1,7 @@
 #include "koala.h"
 #include <bits/stdc++.h>
 #pragma GCC Optimize("O3")
+#pragma GCC Optimize("unroll-loops")
 using namespace std;
 
 int B[100], R[100];
@@ -9,7 +10,7 @@ int B[100], R[100];
 HELPER FUNCTIONS
 */
 
-bool compare(int a, int b, int N, int W) {
+inline bool compare(int a, int b, int N, int W) {
     fill(B, B + N, 0);
     B[a] = B[b] = W;
     playRound(B, R);

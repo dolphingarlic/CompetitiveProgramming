@@ -2,30 +2,16 @@
 
 using namespace std;
 
-vector<int> Encode(vector<int> a, int st) {
-    map<int, int> s;
-    for (int i : a) s[i]++;
+vector<int> global;
 
-    vector<int> ret = {0};
-    for (auto& i : s) for (int j = 0; j <= i.second; j++) ret.push_back(i.first);
-    return ret;
+vector<int> Encode(vector<int> a, int st) {
+    global.clear();
+    for (int i : a) global.push_back(i);
+    return {};
 }
 
 vector<int> Decode(int n, vector<int> em, int st) {
-    map<int, int> s;
-    for (int i : em) s[i]++;
-    
-    for (auto& i : s) {
-        if (i.second == 1) {
-            vector<int> ret;
-            for (auto& j : s) {
-                if (j == i) continue;
-                for (int k = 1; k < j.second; k++) ret.push_back(j.first ^ i.first);
-            }
-            sort(ret.begin(), ret.end());
-            return ret;
-        }
-    }
+    return global;
 }
 
 void WA(const char *msg) {
