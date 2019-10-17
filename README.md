@@ -8,13 +8,17 @@ This is a collection of the various olympiad problems I have solved
 
 [The Asian-Pacific Informatics Olympiad](http://apio-olympiad.org/)
 
-### BOI
-
-[The Baltic Olympiad in Informatics](https://boi2018.progolymp.se/)
-
 ### BkOI
 
 [The Balkan Olympiad in Informatics](https://boi2019.epy.gr/)
+
+### BtOI
+
+[The Baltic Olympiad in Informatics](https://boi2018.progolymp.se/)
+
+### CCO
+
+The Canadian Computing Olympiad
 
 ### CEOI
 
@@ -23,6 +27,14 @@ This is a collection of the various olympiad problems I have solved
 ### COI
 
 [The Croatian Olympiad in Informatics](http://hsin.hr/)
+
+### EgyOI
+
+The Egyptian Olympiad in Informatics
+
+### EstIO
+
+The Estonian Informatics Olympiad
 
 ### IOI
 
