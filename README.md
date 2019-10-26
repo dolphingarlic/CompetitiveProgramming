@@ -56,6 +56,10 @@ The Estonian Informatics Olympiad
 
 [The National Olympiad in Informatics (Singapore)](https://noisg.comp.nus.edu.sg/noi/)
 
+### ONI.ro
+
+[The Romanian Olympiad in Informatics](https://infoarena.ro/)
+
 ### POI
 
 [The Polish Olympiad in Informatics](https://oi.edu.pl/)
