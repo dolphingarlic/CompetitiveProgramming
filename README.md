@@ -18,7 +18,7 @@ This is a collection of the various olympiad problems I have solved
 
 ### CCO
 
-The Canadian Computing Olympiad
+[The Canadian Computing Olympiad](https://www.cemc.uwaterloo.ca/contests/computing/canada_ioi.html)
 
 ### CEOI
 
@@ -30,11 +30,11 @@ The Canadian Computing Olympiad
 
 ### EgyOI
 
-The Egyptian Olympiad in Informatics
+[The Egyptian Olympiad in Informatics](http://eoi.moe.gov.eg/)
 
 ### EstIO
 
-The Estonian Informatics Olympiad
+[The Estonian Informatics Olympiad](http://eio.ee/)
 
 ### IOI
 
