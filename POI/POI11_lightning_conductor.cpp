@@ -17,8 +17,10 @@ void solve(int dp[]) {
     FOR(i, 0, n) {
         // Keep the queue monotone
         if (!i || h[q.back()] < h[i]) {
-            while ((q.size() > 0 && h[i] >= h[q.back()] + ceil(sqrt(i - q.back()))) ||
-                   (q.size() > 1 && slope(q[q.size() - 2], q.back()) > slope(q.back(), i)))
+            while ((q.size() > 0 &&
+                    h[i] >= h[q.back()] + ceil(sqrt(i - q.back()))) ||
+                   (q.size() > 1 &&
+                    slope(q[q.size() - 2], q.back()) > slope(q.back(), i)))
                 q.pop_back();
             q.push_back(i);
         }

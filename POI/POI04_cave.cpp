@@ -18,15 +18,18 @@ void dfs(int node, int parent = -1) {
         }
     }
 
-    if (mx_child == -1) dp[node] = new set<int>{0};
+    if (mx_child == -1)
+        dp[node] = new set<int>{0};
     else {
         set<int> *f = dp[mx_child];
         int a = -1;
         for (int i : graph[node]) {
             if (i != parent && i != mx_child) {
                 for (int j : *dp[i]) {
-                    if (f->find(j) != f->end()) a = max(a, j);
-                    else f->insert(j);
+                    if (f->find(j) != f->end())
+                        a = max(a, j);
+                    else
+                        f->insert(j);
                 }
             }
         }

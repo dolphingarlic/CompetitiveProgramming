@@ -1,15 +1,15 @@
 #include <iostream>
 #include <queue>
 
-int l2(int a) {
-    return (a ? 1 + l2(a >> 1) : -1);
-}
+int l2(int a) { return (a ? 1 + l2(a >> 1) : -1); }
 
 int leading(int a) {
     int ans = 0;
     for (int i = 29; ~i; i--) {
-        if (a & (1<<i)) ans++;
-        else if (ans) return ans;
+        if (a & (1 << i))
+            ans++;
+        else if (ans)
+            return ans;
     }
     return ans;
 }
@@ -30,12 +30,13 @@ int main() {
     while (leadingset.size()) {
         int curr = leadingset.top();
         leadingset.pop();
-        if (curr == 1) c -= 2;
+        if (curr == 1)
+            c -= 2;
         else {
             leadingset.push(curr - 1);
             leadingset.pop();
         }
     }
-    
+
     std::cout << c;
 }

@@ -13,7 +13,8 @@ int main() {
     FOR(i, 0, n) {
         int x, a, b;
         cin >> x >> a >> b;
-        a += 1 + ((abs(a + 1) & 1) ^ (x & 1)), b -= 1 + ((abs(b + 1) & 1) ^ (x & 1));
+        a += 1 + ((abs(a + 1) & 1) ^ (x & 1)),
+            b -= 1 + ((abs(b + 1) & 1) ^ (x & 1));
 
         curr_ub += (x - curr_x);
         curr_lb -= (x - curr_x);

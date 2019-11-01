@@ -21,7 +21,8 @@ int main() {
         if (s[i] == 'c') {
             space.push_back(0);
             c++;
-        } else space[c]++;
+        } else
+            space[c]++;
 
         if (c && space[c] + space[c - 1] >= k) {
             sol.push_back({});

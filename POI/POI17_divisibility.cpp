@@ -12,8 +12,10 @@ ll bin_search(ll k) {
     ll l = 0, r = b;
     while (l != r) {
         ll mid = (l + r) / 2;
-        if (pref[mid] < k) l = mid + 1;
-        else r = mid;
+        if (pref[mid] < k)
+            l = mid + 1;
+        else
+            r = mid;
     }
     return l;
 }
@@ -28,17 +30,17 @@ int main() {
     }
     if (sum % (b - 1)) a[sum % (b - 1)]--;
     pref[0] = a[0];
-    FOR(i, 1, b) {
-        pref[i] = pref[i - 1] + a[i];
-    }
+    FOR(i, 1, b) { pref[i] = pref[i - 1] + a[i]; }
     pref[b] = LLONG_MAX;
 
     FOR(i, 0, q) {
         ll x;
         cin >> x;
         ll pos = bin_search(x + 1);
-        if (pos == b) cout << "-1\n";
-        else cout << pos << '\n';
+        if (pos == b)
+            cout << "-1\n";
+        else
+            cout << pos << '\n';
     }
     return 0;
 }

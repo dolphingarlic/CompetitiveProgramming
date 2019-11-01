@@ -15,7 +15,8 @@ int main() {
     while (q--) {
         int a, l, d;
         cin >> a >> l >> d;
-        if (d >= k) FOR(i, 0, l) containers[a + i * d]++;
+        if (d >= k)
+            FOR(i, 0, l) containers[a + i * d]++;
         else {
             dp[a][d]++;
             dp[a + (l * d)][d]--;

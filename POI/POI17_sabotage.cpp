@@ -17,7 +17,8 @@ void dfs(int node) {
     }
 
     dp2[node] = (graph[node].size() == 0 ? INT_MAX : 0);
-    for (int i : graph[node]) dp2[node] = max(dp2[node], min(dp2[i], dp[i] / (dp[node] - 1.0)));
+    for (int i : graph[node])
+        dp2[node] = max(dp2[node], min(dp2[i], dp[i] / (dp[node] - 1.0)));
 
     if (dp[node] > k) ans = max(ans, dp2[node]);
 }

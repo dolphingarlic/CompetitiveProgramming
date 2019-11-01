@@ -39,8 +39,10 @@ set<int> get_ans(int itv) {
 
     int cnt = 0;
     for (auto& i : events) {
-        if (i.first.second == 1) ans.insert(i.second);
-        else ans.erase(i.second);
+        if (i.first.second == 1)
+            ans.insert(i.second);
+        else
+            ans.erase(i.second);
         cnt += i.first.second;
 
         if (cnt == k) return ans;
@@ -52,15 +54,15 @@ int main() {
     cin.tie(0);
 
     cin >> n >> k;
-    FOR(i, 0, n) {
-        cin >> a[i].first >> a[i].second;
-    }
+    FOR(i, 0, n) { cin >> a[i].first >> a[i].second; }
 
     int l = 1, r = (int)1e9;
     while (l != r) {
         int mid = (l + r + 1) / 2;
-        if (check(mid)) l = mid;
-        else r = mid - 1;
+        if (check(mid))
+            l = mid;
+        else
+            r = mid - 1;
     }
 
     cout << l << '\n';
