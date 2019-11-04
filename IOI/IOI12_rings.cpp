@@ -1,3 +1,4 @@
+#include "grader.h"
 #include <cassert>
 #include <cstdio>
 #include <vector>
