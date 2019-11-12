@@ -39,7 +39,7 @@ bool operator<(pt a, pt b) {
     if (b.y < a.y) return false;
     return a.t == 0;
 }
-pt P[500002] = pt(0, 0, 0);
+vector<pt> P;
 int BIT[200002];
 
 void get_coor(pt &a) {
@@ -77,7 +77,7 @@ void solutionB() {
         P[++p] = pt(nx, P[i].y - D - 1, -1);
         P[++p] = pt(P[i].x - D - 1, ny, -1);
     }
-    sort(P + 1, P + p + 1);
+    sort(P.begin() + 1, P.begin() + p + 1);
 
     long long int ans = 0;
     for (int i = 1; i <= p; i++) {
@@ -149,6 +149,7 @@ int main() {
     ios_base::sync_with_stdio(0);
     cin.tie(0);
     cin >> B >> n >> D >> m;
+    P = vector<pt>(500002, pt(0, 0, 0));
     if (B == 1)
         solutionA();
     else if (B == 2)

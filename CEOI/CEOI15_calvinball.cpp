@@ -3,7 +3,7 @@
 using namespace std;
 typedef long long ll;
 
-const ll MOD = 1e9 + 7;
+const ll MOD = 1e6 + 7;
 
 ll a[10001], mx[10001], dp[2][10001];
 
