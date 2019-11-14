@@ -43,20 +43,11 @@ int main() {
         if (t) {
             update(a, b, -(query(a, b) + query(a - 1, b - 1) - query(a - 1, b) - query(a, b - 1)));
             update(a, b, s);
-            // FOR(i, 1, n + 1) {
-            //     FOR(j, 1, m + 1)
-            //     cout << query(i, j) + query(i - 1, j - 1) - query(i - 1, j) -
-            //                 query(i, j - 1)
-            //          << ' ';
-            //     cout << '\n';
-            // }
         } else {
             ll cost = 0, prev = 0;
             for (ll i = 0;
                  s > 0 && (a + i <= n || b + i <= m || a - i > 0 || b - i > 0);
                  i++) {
-                // We're only interested in the new row/column that takes i
-                // steps to get to
                 ll block = query(min(n, a + i), min(m, b + i)) +
                            query(a - i - 1, b - i - 1) -
                            query(min(n, a + i), b - i - 1) -
