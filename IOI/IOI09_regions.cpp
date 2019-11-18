@@ -1,11 +1,11 @@
 #include <bits/stdc++.h>
-#pragma GCC Optimize("O3")
 #pragma GCC Optimize("unroll-loops")
-#pragma GCC target ("sse4")
+#pragma GCC Optimize("O3")
+#pragma GCC target("sse4,avx2,fma,avx")
 #define FOR(i, x, y) for (int i = x; i < y; i++)
 using namespace std;
 
-const int c = 550;
+const int c = 450;
 
 struct Node {
     int id, region, low, high;
@@ -20,7 +20,7 @@ struct Region {
 Node nodes[200001];
 Region regions[25001];
 
-int ans1[200000 / c][25001], ans2[25001][200000 / c], maps_to[25001];
+int ans1[450][25001], ans2[25001][450], maps_to[25001];
 
 void dfs(int node, int& id_pool) {
     int id = id_pool++;
@@ -37,15 +37,14 @@ void dfs(int node, int& id_pool) {
 inline int query(Region a, Region b) {
     if (a.ranges.empty()) return 0;
 
-    int ans = 0;
-    vector<int>::iterator id = b.ids.begin();
-    while (id != b.ids.end() && *id < a.ranges[0].first) id++;
+    int ans = 0, id = 0;
+    while (id != b.ids.size() && b.ids[id] < a.ranges[0].first) id++;
 
-    for (int i = 0; i < a.ranges.size() - 1 && id != b.ids.end(); i++) {
+    for (int i = 0; i < a.ranges.size() - 1 && id != b.ids.size(); i++) {
         int pos2 = a.ranges[i + 1].first, depth = a.ranges[i].second;
 
-        vector<int>::iterator old = id;
-        while (id != b.ids.end() && *id < pos2) id++;
+        int old = id;
+        while (id != b.ids.size() && b.ids[id] < pos2) id++;
         ans += depth * (id - old);
     }
 
@@ -79,9 +78,12 @@ int main() {
     while (q--) {
         int a, b;
         scanf("%d %d", &a, &b);
-        if (regions[a].ids.size() > c) printf("%d\n", ans1[maps_to[a]][b]);
-        else if (regions[b].ids.size() > c) printf("%d\n", ans2[a][maps_to[b]]);
-        else printf("%d\n", query(regions[a], regions[b]));
+        if (regions[a].ids.size() > c)
+            printf("%d\n", ans1[maps_to[a]][b]);
+        else if (regions[b].ids.size() > c)
+            printf("%d\n", ans2[a][maps_to[b]]);
+        else
+            printf("%d\n", query(regions[a], regions[b]));
         fflush(stdout);
     }
     return 0;
