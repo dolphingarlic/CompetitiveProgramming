@@ -1,6 +1,4 @@
 #include <bits/stdc++.h>
-#pragma GCC Optimize("unroll-loops")
-#pragma GCC target("sse4,avx2,fma,avx")
 #define FOR(i, x, y) for (int i = x; i < y; i++)
 #define x first
 #define y second
@@ -11,11 +9,11 @@ const double PI = 4 * atan(1);
 
 struct Event {
     int type, id;
-    pair<int, int> loc;
+    pair<ll, ll> loc;
 };
 
-pair<int, int> origin, polygon[20];
-bool cmp(pair<int, int> a, pair<int, int> b) {
+pair<ll, ll> origin, polygon[22];
+bool cmp(pair<ll, ll> a, pair<ll, ll> b) {
     return (a.x - origin.x) * (b.y - origin.y) < (a.y - origin.y) * (b.x - origin.x);
 }
 bool operator<(Event a, Event b) {
@@ -28,8 +26,8 @@ bool operator<(Event a, Event b) {
     return angle_a < angle_b;
 }
 
-vector<Event> events;
-bool before[40000];
+vector<Event> events, walls;
+bool before[44444];
 
 int main() {
     ios_base::sync_with_stdio(0);
@@ -45,28 +43,31 @@ int main() {
         events.push_back({1, i, polygon[0]});
         events.push_back({-1, i, polygon[m - 1]});
     }
-
-    FOR(i, 0, n) {
-        events.push_back({0, 0, {0, i}});
-        events.push_back({0, 0, {i, n}});
-        events.push_back({0, 0, {n, n - i}});
-        events.push_back({0, 0, {n - i, 0}});
-    }
-
     sort(events.begin(), events.end());
+
+    FOR(i, origin.x, n) walls.push_back({0, 0, {i, n}});
+    FOR(i, 0, n) walls.push_back({0, 0, {n, n - i}});
+    FOR(i, 0, n) walls.push_back({0, 0, {n - i, 0}});
+    FOR(i, 0, n) walls.push_back({0, 0, {0, i}});
+    FOR(i, 0, origin.x) walls.push_back({0, 0, {i, n}});
+
     int active = 0;
     for (Event i : events) {
         if (i.type == 1) before[i.id] = true;
-        else if (i.type == -1 && !before[i.id]) active++;
+        if (i.type == -1 && !before[i.id]) active++;
     }
 
-    int ans = 0;
+    int ans = 0, ptr = 0;
     for (Event i : events) {
-        if (i.type == 0) {
+        while (ptr != 4 * n && walls[ptr] < i) {
             if (!active) ans++;
-        } else if (i.type == 1) active++;
+            ptr++;
+        }
+        
+        if (i.type == 1) active++;
         else active--;
     }
+    if (!active) ans += 4 * n - ptr;
 
     cout << ans;
     return 0;
