@@ -1,63 +1,64 @@
 #include <bits/stdc++.h>
-#define FOR(i, x, y) for (int i = x; i < y; i++)
-#define MOD 1000000007
-typedef long long ll;
 using namespace std;
 
-ll expo(ll base, ll pow) {
-    ll res = 1;
-    while (pow) {
-        if (pow & 1) res = (res * base) % MOD;
-        pow >>= 1;
-        base = (base * base) % MOD;
-    }
-    return res;
-}
+#define MAXN 503
+typedef long long ll;
 
-pair<int, int> a[501];
-set<int> segments;
-vector<int> b;
-ll dp[501][1001], c[501][1001];
+const int MOD = 1e9 + 7;
+int N, A[MAXN], B[MAXN], L[MAXN * 2], D[MAXN][MAXN * 2], inv[MAXN];
+vector<int> X;
+
+/*
+ * D[i][j] = number of increasing subsequence between index 1 ~ i,
+             and the largest number is equal or lower than the endpoint of
+ interval j
+ * inv[i] = modular inverse of integer i (modulo MOD)
+ */
 
 int main() {
-    iostream::sync_with_stdio(false);
-    cin.tie(0);
-    int n;
-    cin >> n;
-    FOR(i, 1, n + 1) {
-        cin >> a[i].first >> a[i].second;
-        segments.insert(a[i].first);
-        segments.insert(a[i].second);
-    }
-    for (int i : segments) b.push_back(i);
+    inv[1] = 1;
+    for (int i = 2; i < MAXN; i++)
+        inv[i] = (ll)inv[MOD % i] * (MOD - MOD / i) % MOD;
 
-    FOR(i, 1, b.size()) {
-        c[i][0] = 1;
-        FOR(j, 1, b[i] - b[i - 1] + 1) {
-            c[i][j] =
-                ((c[i][j - 1] * (b[i] - b[i - 1] - j + 1)) % MOD * expo(j, MOD - 2)) % MOD;
-            
-            cout << i << ' ' << j << ' ' << c[i][j] << '\n';
-        }
+    scanf("%d", &N);
+    for (int i = 1; i <= N; i++) {
+        scanf("%d%d", A + i, B + i);
+        X.push_back(A[i]);
+        X.push_back(B[i] + 1);
     }
-    cout << '\n';
 
-    FOR(i, 0, b.size()) dp[0][i] = 1;
-    FOR(i, 1, b.size()) {
-        dp[0][i] = 1;
-        FOR(j, 1, n + 1) {
-            int k = 1;
-            dp[j][i] = dp[j - 1][i];
-            while (k <= b[i] - b[i - 1] && a[j - k + 1].second >= b[i] &&
-                   a[j - k + 1].first <= b[i - 1]) {
-                dp[j][i] = (dp[j][i] + dp[j - k][i - 1] * c[i][k]) % MOD;
-                k++;
+    sort(X.begin(), X.end());
+    X.erase(unique(X.begin(), X.end()), X.end());
+
+    for (int i = 1; i <= N; i++) {
+        A[i] = upper_bound(X.begin(), X.end(), A[i]) - X.begin();
+        B[i] = upper_bound(X.begin(), X.end(), B[i]) - X.begin();
+    }
+
+    for (int i = 1; i < X.size(); i++) L[i] = X[i] - X[i - 1];
+    for (int i = 0; i < X.size(); i++) D[0][i] = 1;
+
+    for (int i = 1; i <= N; i++) {
+        for (int j = A[i]; j <= B[i]; j++) {
+            D[i][j] = (ll)L[j] * D[i - 1][j - 1] % MOD;
+
+            int cnt = 1, choose = L[j] - 1;
+            for (int k = i - 1; k > 0; k--) {
+                if (A[k] <= j && j <= B[k]) {
+                    cnt++;
+                    choose = (ll)choose * (L[j] + cnt - 2) % MOD * inv[cnt] % MOD;
+                    if (!choose) break;
+
+                    D[i][j] = (D[i][j] + (ll)D[k - 1][j - 1] * choose) % MOD;
+                }
             }
-
-            cout << i << ' ' << j << ' ' << dp[j][i] << '\n';
         }
+
+        D[i][0] = 1;
+        for (int j = 1; j < X.size(); j++)
+            D[i][j] = ((ll)D[i][j] + D[i - 1][j] + D[i][j - 1] - D[i - 1][j - 1] + MOD) % MOD;
     }
 
-    cout << dp[n][b.size() - 1];
+    printf("%d\n", (D[N][X.size() - 1] - 1 + MOD) % MOD);
     return 0;
 }
