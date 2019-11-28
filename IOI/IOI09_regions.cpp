@@ -5,8 +5,6 @@
 #define FOR(i, x, y) for (int i = x; i < y; i++)
 using namespace std;
 
-const int c = 450;
-
 struct Node {
     int id, region, low, high;
     vector<int> children;
@@ -20,7 +18,7 @@ struct Region {
 Node nodes[200001];
 Region regions[25001];
 
-int ans1[450][25001], ans2[25001][450], maps_to[25001];
+map<int, int> cache;
 
 void dfs(int node, int& id_pool) {
     int id = id_pool++;
@@ -64,26 +62,16 @@ int main() {
     int id_pool = 1;
     dfs(1, id_pool);
 
-    int cnt = 1;
-    FOR(i, 1, r + 1) {
-        if (regions[i].ids.size() > c) {
-            FOR(j, 1, r + 1) {
-                ans1[cnt][j] = query(regions[i], regions[j]);
-                ans2[j][cnt] = query(regions[j], regions[i]);
-            }
-            maps_to[i] = cnt++;
-        }
-    }
-
     while (q--) {
         int a, b;
         scanf("%d %d", &a, &b);
-        if (regions[a].ids.size() > c)
-            printf("%d\n", ans1[maps_to[a]][b]);
-        else if (regions[b].ids.size() > c)
-            printf("%d\n", ans2[a][maps_to[b]]);
-        else
-            printf("%d\n", query(regions[a], regions[b]));
+        if (cache.find(25000 * a + b) != cache.end())
+            printf("%d\n", cache[25000 * a + b]);
+        else {
+            int q = query(regions[a], regions[b]);
+            printf("%d\n", q);
+            cache[25000 * a + b] = q;
+        }
         fflush(stdout);
     }
     return 0;
