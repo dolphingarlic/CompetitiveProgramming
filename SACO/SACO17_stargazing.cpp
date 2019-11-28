@@ -7,9 +7,10 @@ struct Point {
     int x, y, t;
 };
 
-const int MAXN = 2000001;
+const int MAXN = 2000002;
 
-set<int> seg[4 * MAXN];
+set<int> active[MAXN];
+int seg[4 * MAXN];
 Point stars[100001];
 pair<Point, int> events[200001];
 vector<int> graph[100001];
@@ -35,21 +36,30 @@ void onion(int a, int b) {
     }
 }
 
-void update(int pos, int val, bool inserting, int node = 1, int l = 1, int r = MAXN) {
-    if (inserting) seg[node].insert(val);
-    else seg[node].erase(val);
-    
-    if (l != r) {
+void update(int pos, int val, int node = 1, int l = 1, int r = MAXN) {
+    if (l == r) {
+        seg[node] = val;
+    } else {
         int mid = (l + r) / 2;
-        if (pos <= mid) update(pos, val, inserting, node * 2, l, mid);
-        else update(pos, val, inserting, node * 2 + 1, mid + 1, r);
+        if (pos <= mid) update(pos, val, node * 2, l, mid);
+        else update(pos, val, node * 2 + 1, mid + 1, r);
+        seg[node] = min(seg[node * 2], seg[node * 2 + 1]);
     }
 }
 int query(int a, int b, int node = 1, int l = 1, int r = MAXN) {
     if (l > b || r < a) return INT_MAX;
-    if (l >= a && r <= b) return (seg[node].size() ? *(seg[node].begin()) : INT_MAX);
+    if (l >= a && r <= b) return seg[node];
     int mid = (l + r) / 2;
     return min(query(a, b, node * 2, l, mid), query(a, b, node * 2 + 1, mid + 1, r));
+}
+
+void ins(int pos, int val) {
+    active[pos].insert(val);
+    update(pos, *(active[pos].begin()));
+}
+void ers(int pos, int val) {
+    active[pos].erase(val);
+    update(pos, (active[pos].size() ? *(active[pos].begin()) : INT_MAX));
 }
 
 int main() {
@@ -60,9 +70,12 @@ int main() {
     FOR(i, 1, n + 1) {
         int x, y;
         cin >> x >> y;
+        // Rotate star by 45 degrees
         stars[i] = {x + y + 1, y - x + 1000001, i};
     }
     FOR(i, 1, n + 1) component[i] = i, sz[i] = 1;
+
+    fill(seg, seg + 4 * MAXN, INT_MAX);
 
     FOR(i, 0, 4) {
         FOR(j, 1, n + 1) {
@@ -71,20 +84,22 @@ int main() {
         }
         sort(events + 1, events + 2 * n + 1, cmp);
 
+        // Line sweep to find "critical" stars in each quadrant
         FOR(j, 1, 2 * n + 1) {
-            if (events[j].second == 1) {
-                update(events[j].first.x, events[j].first.t, false);
-            } else {
+            if (events[j].second == 1) ers(events[j].first.x, events[j].first.t);
+            else {
                 int q = query(max(1, events[j].first.x - d), events[j].first.x);
                 if (q < events[j].first.t) graph[events[j].first.t].push_back(q);
-                update(events[j].first.x, events[j].first.t, true);
+                ins(events[j].first.x, events[j].first.t);
             }
         }
 
+        // Rotate everything by 90 degrees
         FOR(j, 1, n + 1) stars[j] = {-stars[j].y + 2000002, stars[j].x, stars[j].t};
     }
 
     FOR(i, 1, n + 1) {
+        // DSU to find component sizes
         for (int j : graph[i]) onion(i, j);
         cout << sz[find(i)] << '\n';
     }
