@@ -9,20 +9,17 @@ COCI 2016 Vjestica
 */
 
 #include <bits/stdc++.h>
-#define FOR(i, x, y) for (int i = x; i < y; i++)
-typedef long long ll;
 using namespace std;
 
-int n;
+int n, dp[1 << 16];
 map<char, int> cnt[16];
-int dp[1 << 16];
 
 int get_pref(int mask) {
     map<char, int> pref;
     int ans = 0;
     for (char j = 'a'; j <= 'z'; j++) {
         pref[j] = INT_MAX;
-        FOR(i, 0, n) {
+        for (int i = 0; i < n; i++) {
             if (mask & (1 << i)) pref[j] = min(pref[j], cnt[i][j]);
         }
         ans += pref[j];
@@ -32,30 +29,27 @@ int get_pref(int mask) {
 
 void solve(int mask) {
     int pref = get_pref(mask);
-    if (__builtin_popcount(mask) == 1) {
-        dp[mask] = pref;
-        return;
-    }
-
-    dp[mask] = INT_MAX;
-    for (int i = mask & (mask - 1); i; i = mask & (i - 1)) {
-        dp[mask] = min(dp[mask], dp[i] + dp[mask ^ i] - pref);
+    if (__builtin_popcount(mask) == 1) dp[mask] = pref;
+    else {
+        dp[mask] = INT_MAX;
+        for (int i = mask & (mask - 1); i; i = mask & (i - 1)) {
+            dp[mask] = min(dp[mask], dp[i] + dp[mask ^ i] - pref);
+        }
     }
 }
 
 int main() {
     ios_base::sync_with_stdio(0);
     cin.tie(0);
-    memset(dp, -1, sizeof(dp));
     cin >> n;
-    FOR(i, 0, n) {
+    for (int i = 0; i < n; i++) {
         for (char j = 'a'; j <= 'z'; j++) cnt[i][j] = 0;
         string s;
         cin >> s;
         for (char j : s) cnt[i][j]++;
     }
 
-    FOR(i, 1, (1 << n)) solve(i);
+    for (int i = 1; i < (1 << n); i++) solve(i);
 
     cout << dp[(1 << n) - 1] + 1;
     return 0;
