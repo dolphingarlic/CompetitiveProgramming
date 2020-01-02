@@ -1,5 +1,13 @@
 /*
 infoarena countfefete
+- Simplified statement:
+    You're given a tree with weighted edges. Define f(S) for some subset of the nodes as follows:
+        First, take the xor sum of the weights of the nodes in S. Let this result be X
+        Next, take the node with least weight on the shortest path between the nodes in S. Let the weight be Y
+        f(S) = X ^ Y
+    E.g. if we have 1 -- 2 -- 3, then f({1, 3}) = v[1] ^ v[3] ^ v[k] where v[k] = min(v[1], v[2], v[3])
+    Find the sum of f(S) for all subsets of the nodes, modulo 1e9+7 
+
 - Since xor for general integers is inconvenient, let's rather solve the problem a single bit at a time
     - This works since the set {0, 1} is closed under xor, so if we have the sum of subsets for a particular bit i
       (let's say this result is x), then we can simply add x<<i to the answer
