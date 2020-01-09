@@ -371,8 +371,8 @@ struct bigint {
   ######################################################################
 */
 
-bigint factorial[600], pos[600][600];
-bool visited[600][600];
+bigint factorial[576], pos[576][576];
+bool visited[576][576];
 
 inline bigint choose(int a, int b) {
     return factorial[a] / factorial[b] / factorial[a - b];
@@ -399,7 +399,7 @@ inline bigint get_seq_idx(int L, int X[]) {
 
 void decode(int N, int L, int X[]) {
     factorial[0] = 1;
-    FOR(i, 1, 600) factorial[i] = factorial[i - 1] * i;
+    FOR(i, 1, 576) factorial[i] = factorial[i - 1] * i;
 
     sort(X, X + L);
     bigint idx = get_seq_idx(L, X);
