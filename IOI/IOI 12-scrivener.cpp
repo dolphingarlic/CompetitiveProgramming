@@ -1,8 +1,6 @@
 #include "grader.h"
 #include <bits/stdc++.h>
-#pragma GCC optimize("O3")
 #define FOR(i, x, y) for (int i = x; i < y; i++)
-typedef long long ll;
 using namespace std;
 
 int dp[21][1000001], indx = 1, len_at[1000001];
