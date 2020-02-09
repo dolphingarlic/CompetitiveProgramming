@@ -25,19 +25,7 @@ inline ll mmult(ll a, ll b) {
     return a;
 }
 
-ll expo(ll a, ll b) {
-    ll ans = 1;
-    if (!a) return 1;
-    while (b) {
-        if (b & 1) ans = (ans * a) % MOD;
-        b >>= 1;
-        a = (a * a) % MOD;
-    }
-    return ans;
-}
-
 ll chs[351][351], dp[351][351], dp2[351][351];
-// dp = Ways to distribute j numbered problems to first i kids where all are sad
 
 int main() {
     iostream::sync_with_stdio(false);
