@@ -1,3 +1,15 @@
+/*
+COI 2014 GTA
+- If we can get A to B and B to C, we can get A to C
+    - So all molecules belong to some disjoint "classes"
+- Basically there are only 24 "classes"
+- Represent A, C, G, T as permutations such that when we compose
+  them, the mutations happen
+    - This lets us represent each class as a unique permutation since
+      mutations preserve the permutations
+- Complexity: O(N^2 * MAXLEN)
+*/
+
 #include <bits/stdc++.h>
 using namespace std;
 
