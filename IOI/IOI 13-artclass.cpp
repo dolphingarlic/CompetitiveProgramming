@@ -1,51 +1,88 @@
 #include <bits/stdc++.h>
-#pragma GCC Optimize("O3")
-#define FOR(i, x, y) for (int i = x; i < y; i++)
-#define MOD 1000000007
-typedef long long ll;
+#include "artclass.h"
 using namespace std;
-
-int getR(int RGB) { return (RGB >> 16) & 0xFF; }
-
-int getG(int RGB) { return (RGB >> 8) & 0xFF; }
-
-int getB(int RGB) { return RGB & 0xFF; }
-
-int getSum(int RGB) { return getR(RGB) + getB(RGB) + getG(RGB); }
-
-int a[502][502];
-
-double calc(int x, int y) {
-    return abs((4 * getSum(a[x][y]) - getSum(a[x - 1][y]) - getSum(a[x + 1][y]) - getSum(a[x][y - 1]) - getSum(a[x][y + 1])));
-}
-
-int main() {
-    iostream::sync_with_stdio(false);
-    cin.tie(0);
-    int T;
-    cin >> T;
-    FOR(test, 0, T) {
-        int H, W;
-        cin >> H >> W;
-        FOR(i, 1, H + 1)
-            FOR(j, 1, W + 1) cin >> a[i][j];
-        FOR(i, 1, H + 1)
-        a[i][W + 1] = 0x7F7F7F;
-        FOR(i, 1, W + 1)
-        a[H + 1][i] = 0x7F7F7F;
-
-
-        double ave = 0;
-        FOR(i, 1, H + 1)
-        FOR(j, 1, W + 1) {
-            ave += calc(i, j);
-        }
-        ave /= (W * H);
-        if (ave < 26) cout << "4\n";
-        else if (ave < 56) cout << "1\n";
-        else if (ave < 160) cout << "2\n";
-        else cout << "3\n";
-        // cout << ave << '\n';
+typedef long long ll;
+#define D 20
+#define K 300
+#define F 250
+#define PB push_back
+int s, t[10005], sz, ch, fh;
+vector<int> q[250005];
+bool vis[250005];
+ll ul, ur, dl, dr, rs, gs, bs;
+void dfs(int v) {
+    vis[v] = true;
+    s++;
+    if (s > 10000) return;
+    for (int i = 0; i < q[v].size(); i++) {
+        int u = q[v][i];
+        if (!vis[u]) dfs(u);
     }
-    return 0;
+}
+int style(int h, int w, int r[500][500], int g[500][500], int b[500][500]) {
+    for (int i = 0; i < h; i++) {
+        for (int j = 0; j < w; j++) {
+            if (i < h / 2 && j < w / 2) ul += ll(r[i][j] + g[i][j] + b[i][j]);
+            if (i < h / 2 && j >= w / 2) ur += ll(r[i][j] + g[i][j] + b[i][j]);
+            if (i >= h / 2 && j < w / 2) dl += ll(r[i][j] + g[i][j] + b[i][j]);
+            if (i >= h / 2 && j >= w / 2) dr += ll(r[i][j] + g[i][j] + b[i][j]);
+            rs += ll(r[i][j]);
+            gs += ll(g[i][j]);
+            bs += ll(b[i][j]);
+            if (j + 1 < w && abs(r[i][j] - r[i][j + 1]) < D &&
+                abs(g[i][j] - g[i][j + 1]) < D &&
+                abs(b[i][j] - b[i][j + 1]) < D) {
+                q[i * w + j].PB(i * w + j + 1);
+                q[i * w + j + 1].PB(i * w + j);
+            }
+            if (j + 1 < w && abs(r[i][j] - r[i][j + 1]) +
+                                     abs(g[i][j] - g[i][j + 1]) +
+                                     abs(b[i][j] - b[i][j + 1]) >
+                                 K) {
+                ch++;
+            }
+            if (j + 1 < w && abs(r[i][j] - r[i][j + 1]) +
+                                     abs(g[i][j] - g[i][j + 1]) +
+                                     abs(b[i][j] - b[i][j + 1]) >
+                                 F) {
+                fh++;
+            }
+            if (i + 1 < h && abs(r[i][j] - r[i + 1][j]) < D &&
+                abs(g[i][j] - g[i + 1][j]) < D &&
+                abs(b[i][j] - b[i + 1][j]) < D) {
+                q[i * w + j].PB((i + 1) * w + j);
+                q[(i + 1) * w + j].PB(i * w + j);
+            }
+            if (i + 1 < h && abs(r[i][j] - r[i + 1][j]) +
+                                     abs(g[i][j] - g[i + 1][j]) +
+                                     abs(b[i][j] - b[i + 1][j]) >
+                                 K) {
+                ch++;
+            }
+            if (i + 1 < h && abs(r[i][j] - r[i + 1][j]) +
+                                     abs(g[i][j] - g[i + 1][j]) +
+                                     abs(b[i][j] - b[i + 1][j]) >
+                                 F) {
+                fh++;
+            }
+            vis[i * w + j] = false;
+        }
+    }
+    for (int i = 0; i < h * w; i++) {
+        if (!vis[i]) {
+            s = 0;
+            dfs(i);
+            sz++;
+        }
+    }
+    ll sum = ur + ul + dl + dr;
+    if (ch < 10) return 4;
+    if (sz > 39000) return 3;
+    if (fh < 200) return 2;
+    if (double(bs) / double(rs + gs + bs) < double(0.24)) return 2;
+    if (abs(double(ur + ul) / double(sum) - double(0.5)) * double(10) > 0.83 ||
+        abs(double(ur + dr) / double(sum) - double(0.5)) * double(10) > 0.8)
+        return 2;
+    if (sum < 60000000LL) return 2;
+    return 1;
 }

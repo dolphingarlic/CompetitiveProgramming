@@ -21,7 +21,7 @@ IOI 2013 Wombats
 - Complexity: O(UC^2 log R + Q)
 */
 
-#include "wombats.h"
+#include "grader.h"
 #include <bits/stdc++.h>
 #define FOR(i, x, y) for (int i = x; i < y; i++)
 using namespace std;
