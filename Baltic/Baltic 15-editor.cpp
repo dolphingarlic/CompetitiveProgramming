@@ -51,7 +51,7 @@ int main() {
                 mn[i][j] = min(mn[i][j - 1], mn[anc[i][j - 1]][j - 1]);
             }
         }
-        cout << ans[i] << ' ' << anc[i][0] << ' ' << '\n';
     }
+    FOR(i, 1, n + 1) cout << ans[i] << '\n';
     return 0;
 }
