@@ -1,23 +1,15 @@
 /*
 Baltic 2015 Editor
-- Firstly, the last operation is always active
-- Secondly, if operation y can't undo x but operation z can
-  undo x where x < y < z, then z can undo y
-    - This means for each operation, we only care about the
-      most recent operation whose level is strictly less than
-      the current operation
-    - View the sequence as a tree now
-        - Connect each operation to the other operation
-          mentioned above
-        - This means we can use binary lifting to find which
-          operation to undo by also storing suffix minimums
-- Thirdly, if we view the sequence of numbers we get as a trie,
-  each operation moves us either up or down a single node
-    - This means only the current letter can be undone
-    - So if we undo operation x with operation y, the answer
-      for operation y is the answer for operation x - 1
-        - Operation x - 1 must be active after operation y,
-          so connect y with x - 1
+- Firstly, notice how if x can't undo y and z can't undo x, then z can't undo y.
+- Let each operation be a node.
+    - If undo operation x undoes operation y, draw an edge between x and y - 1 and let par[x] = y - 1.
+    - Notice how the answer for x is the answer for par[x].
+- Consider an undo operation z.
+    - If z can't undo x, then z can't undo any operation in the range (par[x], x].
+    - This is because par[x] + 1 is the most recent active operation x could undo and the states of the nodes (par[x] + 1, x] remain unchanged.
+    - This still holds when we undo some operations.
+- Therefore, the operation we undo must lie on some path from the most recent operation upwards.
+- We can use suffix minimums and binary lifting to find this operation.
 - Complexity: O(N log N)
 */
 
