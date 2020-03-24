@@ -1,6 +1,6 @@
 #include "gondola.h"
 #include <bits/stdc++.h>
-#pragma GCC Optimize("O3")
+#pragma GCC optimize("O3")
 #define FOR(i, x, y) for (int i = x; i < y; i++)
 #define MOD 1000000009
 typedef long long ll;

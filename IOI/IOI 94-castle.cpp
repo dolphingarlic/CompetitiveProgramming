@@ -1,5 +1,5 @@
 #include <bits/stdc++.h>
-#pragma GCC Optimize("O3")
+#pragma GCC optimize("O3")
 #define MAXDIM 50
 #define MAXN 100
 #define MAXCOLOR 100

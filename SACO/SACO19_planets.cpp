@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 #define FOR(i, x, y) for (ll i = x; i < y; i++)
-#pragma GCC Optimize("O3")
-#pragma GCC Optimize("unroll-loops")
+#pragma GCC optimize("O3")
+#pragma GCC optimize("unroll-loops")
 using namespace std;
 typedef long long ll;
 

@@ -1,7 +1,7 @@
 // Hashing
 
 #include <bits/stdc++.h>
-#pragma GCC Optimize("unroll-loops")
+#pragma GCC optimize("unroll-loops")
 #pragma GCC target("sse4,avx2,fma,avx")
 #define FOR(i, x, y) for (ll i = x; i < y; i++)
 using namespace std;

@@ -1,6 +1,6 @@
 #include <bits/stdc++.h>
-#pragma GCC Optimize("O3")
-#pragma GCC Optimize("unroll-loops")
+#pragma GCC optimize("O3")
+#pragma GCC optimize("unroll-loops")
 using namespace std;
 
 int gcd(int x, int y) { return !y ? x : gcd(y, x % y); }

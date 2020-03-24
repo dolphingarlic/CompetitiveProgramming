@@ -1,6 +1,6 @@
 #include <bits/stdc++.h>
-#pragma GCC Optimize("unroll-loops")
-#pragma GCC Optimize("O3")
+#pragma GCC optimize("unroll-loops")
+#pragma GCC optimize("O3")
 #pragma GCC target("sse4,avx2,fma,avx")
 #define FOR(i, x, y) for (int i = x; i < y; i++)
 using namespace std;

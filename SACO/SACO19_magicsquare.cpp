@@ -1,5 +1,5 @@
 #include <bits/stdc++.h>
-#pragma GCC Optimize("O3")
+#pragma GCC optimize("O3")
 #define FOR(i, x, y) for (ll i = x; i < y; i++)
 #define MOD 1000000007
 typedef long long ll;

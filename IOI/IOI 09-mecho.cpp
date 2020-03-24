@@ -1,5 +1,5 @@
 #include <bits/stdc++.h>
-#pragma GCC Optimize("O3")
+#pragma GCC optimize("O3")
 using namespace std;
 
 #define MAX_N 2000

@@ -1,7 +1,7 @@
 #include "koala.h"
 #include <bits/stdc++.h>
-#pragma GCC Optimize("O3")
-#pragma GCC Optimize("unroll-loops")
+#pragma GCC optimize("O3")
+#pragma GCC optimize("unroll-loops")
 using namespace std;
 
 int B[100], R[100];

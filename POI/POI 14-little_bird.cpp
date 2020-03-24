@@ -1,6 +1,6 @@
 #include <bits/stdc++.h>
-#pragma GCC Optimize("O3")
-#pragma GCC Optimizez("unroll-loops")
+#pragma GCC optimize("O3")
+#pragma GCC optimizez("unroll-loops")
 #define FOR(i, x, y) for (int i = x; i < y; i++)
 #define MOD 1000000007
 typedef long long ll;
