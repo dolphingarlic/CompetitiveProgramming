@@ -1,4 +1,5 @@
 #include <bits/stdc++.h>
+#pragma GCC optimize("O3")
 #pragma GCC optimize("unroll-loops")
 #pragma GCC target("sse4,avx2,fma,avx")
 #define FOR(i, x, y) for (int i = x; i < y; i++)
@@ -110,9 +111,12 @@ int main() {
         if (!visited[x][y]) {
             visited[x][y] = -dist;
             FOR(i, 0, 4)
-            if (graph[x][y][i].first) pq.push({dist - 1, graph[x][y][i]});
+            if (graph[x][y][i].first &&
+                !visited[graph[x][y][i].first][graph[x][y][i].second])
+                pq.push({dist - 1, graph[x][y][i]});
             FOR(i, 4, 8)
-            if (graph[x][y][i].first)
+            if (graph[x][y][i].first &&
+                !visited[graph[x][y][i].first][graph[x][y][i].second])
                 pq.push({dist - to_wall[x][y], graph[x][y][i]});
         }
         if (curr == dest) break;
