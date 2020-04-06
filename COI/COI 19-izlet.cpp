@@ -12,7 +12,7 @@ COI 2019 Izlet
         - If w exists, then make u the same colour as w
         - Otherwise, make u a new colour
         - DFS on u
-- For a formal proof of why this works, see https://codeforces.com/blog/entry/66506?#comment-505659
+- Convince yourself that this works because I'm not proving it
 - Complexity: O(N^2)
 */
 
