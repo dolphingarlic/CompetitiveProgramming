@@ -1,13 +1,6 @@
 /*
 IOI 2003 Reverse
-- Let lim = {8, 44, 97, 115, 257}
-    - The maximum number of consecutive S operations is
-      lower_bound(lim, lim + 5) - lim
-    - Let this value be mx
-- Case 1: mx == 2 or mx == 4
-    - TODO
-- Case 2: mx == 0 or mx == 1 or mx == 3
-    - TODO
+- https://codeforces.com/blog/entry/75726
 */
 
 #include <bits/stdc++.h>
