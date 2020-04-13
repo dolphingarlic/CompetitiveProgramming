@@ -8,11 +8,11 @@ This is a collection of the various olympiad problems I have solved
 
 [The Asian-Pacific Informatics Olympiad](http://apio-olympiad.org/)
 
-### BkOI
+### Balkan
 
 [The Balkan Olympiad in Informatics](https://boi2019.epy.gr/)
 
-### BtOI
+### Baltic
 
 [The Baltic Olympiad in Informatics](https://boi2018.progolymp.se/)
 
@@ -32,7 +32,7 @@ This is a collection of the various olympiad problems I have solved
 
 [The Egyptian Olympiad in Informatics](http://eoi.moe.gov.eg/)
 
-### EstIO
+### Estonian
 
 [The Estonian Informatics Olympiad](http://eio.ee/)
 
@@ -56,7 +56,7 @@ This is a collection of the various olympiad problems I have solved
 
 [The National Olympiad in Informatics (Singapore)](https://noisg.comp.nus.edu.sg/noi/)
 
-### ONI.ro
+### infoarena
 
 [The Romanian Olympiad in Informatics](https://infoarena.ro/)
 

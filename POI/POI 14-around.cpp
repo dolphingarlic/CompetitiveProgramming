@@ -24,20 +24,20 @@ int main() {
     }
     sort(p, p + s);
 
+    memset(visited, 0x3f, sizeof(visited));
+    visited[0] = 0;
     FOR(i, 0, s) {
         ans[p[i].second] = INT_MAX;
-        fill(visited, visited + 2 * n, 0);
 
-        int mn;
         FOR(j, 0, 2 * n) {
-            if (j && !visited[j]) visited[j] = mn;
-            else mn = visited[j] + 1;
-            
-            while (idx[j] < 2 * n && dst[j] + l[idx[j]] <= p[i].first) dst[j] += l[idx[j]++];
-            visited[idx[j]] = visited[j] + 1;
-            cout << visited[j] << ' ';
+            if (visited[j] > 2 * n) ans[p[i].second] = -1;
+            else {
+                while (idx[j] < 2 * n && dst[j] + l[idx[j]] <= p[i].first) {
+                    dst[j] += l[idx[j]++];
+                    visited[idx[j]] = min(visited[idx[j]], visited[j] + 1);
+                }
+            }
         }
-        cout << '\n';
 
         for (int j = n - 1; ~j; j--) {
             ans[p[i].second] = min(ans[p[i].second], visited[j + n] - visited[j]);
