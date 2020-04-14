@@ -48,6 +48,10 @@ This is a collection of the various olympiad problems I have solved
 
 [The Japanese Olympiad in Informatics](https://www.ioi-jp.org/)
 
+### LMIO
+
+[The Lithuanian Informatics Olympiad](http://www.lmio.mii.vu.lt/)
+
 ### NOI.cn
 
 [The National Olympiad in Informatics (China)](http://www.noi.cn/)
