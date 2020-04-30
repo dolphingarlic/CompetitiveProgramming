@@ -1,3 +1,10 @@
+/*
+CEOI 2011 Hotel
+- Sort orders by price and assign each to the smallest room available
+- Then just pick the O best order-room pairs
+- Complexity: O(N log N)
+*/
+
 #include <bits/stdc++.h>
 typedef long long ll;
 using namespace std;
