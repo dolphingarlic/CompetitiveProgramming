@@ -52,10 +52,10 @@ int main() {
         s.insert({a[i].second, i});
     }
 
-    FOR(i, 0, n) if (find(i) == find(i + n)) return cout << 0, 0;
+    FOR(i, 0, n) if (find(i) == find(i + n)) return cout << "0\n", 0;
     ll cnt = 0, ans = 1;
     FOR(i, 0, 2 * n) if (find(i) == i) cnt++;
     FOR(i, 0, cnt / 2) ans = (ans * 2) % MOD;
-    cout << ans;
+    cout << ans << '\n';
     return 0;
 }

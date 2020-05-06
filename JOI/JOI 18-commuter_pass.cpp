@@ -78,6 +78,6 @@ int main() {
     dijkstra2(s, t);
     dijkstra2(t, s);
 
-    cout << ans;
+    cout << ans << '\n';
     return 0;
 }
