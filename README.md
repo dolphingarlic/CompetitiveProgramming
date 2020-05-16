@@ -52,6 +52,10 @@ This is a collection of the various olympiad problems I have solved
 
 [The Lithuanian Informatics Olympiad](http://www.lmio.mii.vu.lt/)
 
+### MCO
+
+The Malaysian Coding Olympiad
+
 ### NOI.cn
 
 [The National Olympiad in Informatics (China)](http://www.noi.cn/)
