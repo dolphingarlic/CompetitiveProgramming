@@ -1,10 +1,11 @@
+#include "traffic.h"
+
 #include <bits/stdc++.h>
-#pragma GCC optimize("O3")
-#define FOR(i, x, y) for(ll i = x; i < y; i++)
+#define FOR(i, x, y) for (int i = x; i < y; i++)
 typedef long long ll;
 using namespace std;
 
-ll a[1000000], dp2[1000000], totsum = 0, ans = LLONG_MAX, city;
+ll n, a[1000000], dp2[1000000], totsum = 0, ans = LLONG_MAX, city;
 vector<ll> graph[1000000];
 pair<ll, ll> dp1[1000000];
 
@@ -20,22 +21,16 @@ void dfs(ll node, ll parent = -1) {
     if (ans > max(dp1[node].first, dp2[node])) ans = max(dp1[node].first, dp2[node]), city = node;
 }
 
-int main() {
-    ios_base::sync_with_stdio(false);
-    cin.tie(NULL);
-    ll n;
-    cin >> n;
+int LocateCentre(int N, int A[], int S[], int D[]) {
+    n = N;
     FOR(i, 0, n) {
-        cin >> a[i];
+        a[i] = A[i];
         totsum += a[i];
     }
     FOR(i, 0, n - 1) {
-        ll x, y;
-        cin >> x >> y;
-        graph[x].push_back(y);
-        graph[y].push_back(x);
+        graph[S[i]].push_back(D[i]);
+        graph[D[i]].push_back(S[i]);
     }
     dfs(0);
-    cout << city << '\n';
-    return 0;
+    return city;
 }

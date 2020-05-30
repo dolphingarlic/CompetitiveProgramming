@@ -1,4 +1,4 @@
-#include "grader.h"
+#include "quality.h"
 
 int lg[3001][3001], pref[3001][3001];
 

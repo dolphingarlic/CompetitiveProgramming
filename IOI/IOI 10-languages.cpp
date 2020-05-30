@@ -5,7 +5,7 @@ IOI 2010 Languages
     - More specifically, single letters, bigrams, trigrams, and four-grams
 - If we count the frequency of the n-grams from previous queries, we can
   somewhat accurately match the language by assigning weights to each n
-- The code below has a 92.6% accuracy, which gets us 101 points
+- The code below has a 92.84% accuracy, which gets us 102 points
 */
 
 #include <bits/stdc++.h>
@@ -35,9 +35,9 @@ void excerpt(int *E) {
     FOR(i, 0, LANGS) {
         double sim = 0;
         FOR(j, 0, SZ - 3) {
-            sim += hyperb(freq[i][qu[j]]) * 138;
-            sim += hyperb(freq[i][tr[j]]) * 60;
-            sim += hyperb(freq[i][bi[j]]) * 97;
+            sim += hyperb(freq[i][qu[j]]) * 9;
+            sim += hyperb(freq[i][tr[j]]) * 1;
+            sim += hyperb(freq[i][bi[j]]) * 7;
             sim += hyperb(freq[i][si[j]]) * 1;
         }
         sim /= log(cnt[i] + 2);
