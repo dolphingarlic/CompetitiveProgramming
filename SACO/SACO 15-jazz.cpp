@@ -23,7 +23,6 @@ int main() {
                         min(dp[i][i + j], dp[i + 1][k - 1] + dp[k + 1][i + j]);
                 }
             }
-            // cout << i << ' ' << i + j << ' ' << dp[i][i + j] << '\n';
         }
     }
     cout << dp[0][s.size() - 1] << '\n';
