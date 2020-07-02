@@ -73,9 +73,9 @@ int main() {
     int n, m;
     cin >> n >> m;
     FOR(i, 1, n + 1) cin >> p[i].x >> p[i].y;
-    unordered_set<ll> bad;
+    unordered_set<int> bad;
     while (m--) {
-        ll u, v;
+        int u, v;
         cin >> u >> v;
         bad.insert(u * n + v);
     }
@@ -83,7 +83,7 @@ int main() {
     int prv = 1;
     FOR(i, 1, n) {
         for (int j = n; j > prv; j--) {
-            if (bad.find(ll(i) * n + j) == bad.end()) {
+            if (bad.find(i * n + j) == bad.end()) {
                 add_line(p[i], p[j]);
                 prv = j;
                 break;
