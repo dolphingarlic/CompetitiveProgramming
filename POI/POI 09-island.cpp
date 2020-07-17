@@ -21,7 +21,7 @@ struct Point {
     double x, y;
 } p[100000], hull[100000];
 
-int h = 1, t = 0;
+int t = 0;
 
 bool ccw(Point A, Point B, Point C) {
     return (A.x - B.x) * (C.y - B.y) <= (A.y - B.y) * (C.x - B.x);
@@ -48,23 +48,18 @@ Point intersect(Point A, Point B, Point C, Point D) {
 }
 
 void add_line(Point A, Point B) {
-    if (h > t) {
+    if (!t) {
         hull[++t] = A;
         hull[++t] = B;
         return;
     }
 
     if (ccw(A, B, hull[t])) {
-        while (h <= t && ccw(A, B, hull[t])) t--;
+        while (t && ccw(A, B, hull[t])) t--;
         hull[t + 1] = intersect(hull[t], hull[t + 1], A, B);
         t++;
     }
-    if (ccw(A, B, hull[h])) {
-        while (h <= t && ccw(A, B, hull[h])) h++;
-        hull[h - 1] = intersect(hull[h - 1], hull[h], A, B);
-        h--;
-        hull[++t] = hull[h];
-    } else hull[++t] = B;
+    hull[++t] = B;
 }
 
 int main() {
@@ -92,7 +87,7 @@ int main() {
     }
 
     double ans = 0;
-    FOR(i, h, t) ans += hypot(hull[i + 1].x - hull[i].x, hull[i + 1].y - hull[i].y);
+    FOR(i, 1, t) ans += hypot(hull[i + 1].x - hull[i].x, hull[i + 1].y - hull[i].y);
     cout << fixed << setprecision(6) << ans;
     return 0;
 }

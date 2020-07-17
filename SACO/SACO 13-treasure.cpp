@@ -8,7 +8,7 @@ int main() {
     cin.tie(0);
     int s, p;
     cin >> s >> p;
-    while ((p - 1) / 2 > s) {
+    while ((p - 1) / 2 >= s) {
         cout << "0\n";
         p--;
     }

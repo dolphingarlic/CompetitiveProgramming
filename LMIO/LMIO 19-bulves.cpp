@@ -1,8 +1,8 @@
 /*
 LMIO 2019 Bulves
 - We want to transform the arrays A so that A[i] >= B[i] for each i
-    - This means if we define the array C[i] = A[i] - B[i], then C is a
-      non-decreasing sequence and 0 <= C[i] <= C[N]
+    - This means if we define the array C[i] = A[i] - B[i], then C must become a
+      non-decreasing sequence with 0 <= C[i] <= C[N]
 - Notice how each time we move a fertilizer to an adjacent position, exactly
   1 element of C changes and we increment the cost by 1
 - This problem thus turns into https://codeforces.com/contest/713/problem/C and

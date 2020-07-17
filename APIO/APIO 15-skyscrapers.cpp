@@ -1,85 +1,54 @@
-#include <iostream>
-#include <queue>
-#include <set>
-#include <vector>
+#include <bits/stdc++.h>
+#define FOR(i, x, y) for (int i = x; i < y; i++)
+typedef long long ll;
 using namespace std;
-priority_queue<pair<int, int>> q1;
-const int MAXN = 30010;
-set<int> v1[MAXN];
-vector<pair<int, int>> g[MAXN];
-bool visited[MAXN];
-int dp[MAXN];
-int target;
- 
-int first, jump;
+
+set<int> doges[30000];
+vector<pair<int, int>> graph[30000];
+int visited[30000];
+
 int main() {
-    int n, m;
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
+    int n, m, src, dest;
     cin >> n >> m;
-    for (int i = 0; i < m; i++) {
+    FOR(i, 0, m) {
         int b, p;
         cin >> b >> p;
-        if (i == 0) {
-            first = b;
-            jump = p;
-        }
-        if (i == 1) {
-            target = b;
-        }
- 
-        v1[b].insert(p);
+        if (!i) src = b;
+        if (i == 1) dest = b;
+        doges[b].insert(p);
     }
-    for (int i = 0; i <= n; i++) {
-        for (int x : v1[i]) {
-            int b = i;
-            int p = x;
-            int count = 1;
-            for (int j = b + p; j <= n; j += p) {
-                if (v1[j].find(p) != v1[j].end()) {
-                    g[b].push_back(make_pair(j, count));
-                    break;
-                }
-                g[b].push_back(make_pair(j, count));
-                count++;
+
+    FOR(i, 0, n) {
+        for (int j : doges[i]) {
+            for (int k = i + j, cnt = 1; k < n; k += j, cnt++) {
+                graph[i].push_back({k, cnt});
+                if (doges[k].find(j) != doges[k].end()) break;
             }
-            count = 1;
-            for (int j = b - p; j >= 0; j -= p) {
-                if (v1[j].find(p) != v1[j].end()) {
-                    g[b].push_back(make_pair(j, count));
-                    break;
-                }
-                g[b].push_back(make_pair(j, count));
-                count++;
+            for (int k = i - j, cnt = 1; k >= 0; k -= j, cnt++) {
+                graph[i].push_back({k, cnt});
+                if (doges[k].find(j) != doges[k].end()) break;
             }
         }
     }
-    q1.push(make_pair(0, first));
-    for (int i = 0; i <= n; i++) {
-        dp[i] = 1e9;
-    }
-    dp[first] = 0;
- 
-    while (!q1.empty()) {
-        auto hold = q1.top();
-        int skyscraper = hold.second;
-        int dist = -1 * hold.first;
- 
-        q1.pop();
-        if (skyscraper == target) {
-            cout << dist << endl;
-            return 0;
-        }
-        if (visited[skyscraper]) {
-            continue;
-        }
-        visited[skyscraper] = true;
-        for (auto x : g[skyscraper]) {
-            int w = x.second;
-            int to = x.first;
-            if (dp[to] > dp[skyscraper] + w) {
-                dp[to] = dp[skyscraper] + w;
-                q1.push(make_pair(-1 * dp[to], to));
+
+    memset(visited, 0x3f, sizeof visited);
+    priority_queue<pair<int, int>> pq;
+    pq.push({0, src});
+    visited[src] = 0;
+    while (pq.size()) {
+        int dist, node;
+        tie(dist, node) = pq.top();
+        pq.pop();
+        if (node == dest) return cout << -dist, 0;
+        for (pair<int, int> i : graph[node]) {
+            if (i.second - dist < visited[i.first]) {
+                visited[i.first] = i.second - dist;
+                pq.push({dist - i.second, i.first});
             }
         }
     }
-    cout << -1 << endl;
+    cout << -1;
+    return 0;
 }
