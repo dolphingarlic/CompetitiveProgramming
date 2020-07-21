@@ -3,42 +3,75 @@
 typedef long long ll;
 using namespace std;
 
+struct pair_hash {
+    inline size_t operator()(const pair<int,int> & v) const {
+        return (v.first<<11)+v.second;
+    }
+};
+
 int l, w, k;
 char grid[1026][1026];
 int cmp = 1, v[1026][1026];
 vector<pair<int, int>> d = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
 
-bool available(int x, int y) {
-    return x && y && x <= l && y <= w && grid[x][y] != '#' && !v[x][y] &&
+inline bool available(int x, int y) {
+    return grid[x][y] == '.' && !v[x][y] &&
            v[x + 1][y] + v[x - 1][y] + v[x][y + 1] + v[x][y - 1] ==
                max({v[x + 1][y], v[x - 1][y], v[x][y + 1], v[x][y - 1]});
 }
 
 int bfs(int x, int y) {
-    queue<pair<int, int>> q;
+    unordered_set<pair<int, int>, pair_hash> q, added = {{x, y}};
     v[x][y] = cmp;
-    q.push({x, y});
-    int ret = 0;
-    while (q.size()) {
-        tie(x, y) = q.front();
-        q.pop();
+    for (pair<int, int> i : d) if (available(x + i.first, y + i.second))
+        q.insert({x + i.first, y + i.second});
 
-        int cnt = 0;
-        random_shuffle(d.begin(), d.end());
+    while (q.size()) {
+        vector<pair<int, int>> to_erase;
+        pair<int, pair<int, int>> best;
+        for (pair<int, int> i : q) {
+            if (!available(i.first, i.second)) to_erase.push_back(i);
+            else {
+                int cnt = 0;
+                for (pair<int, int> j : d) cnt += available(i.first + j.first, i.second + j.second);
+                best = max(best, {cnt, i});
+            }
+        }
+        for (pair<int, int> i : to_erase) q.erase(i);
+        q.erase(best.second);
+
+        tie(x, y) = best.second;
+        v[x][y] = cmp;
+        added.insert({x, y});
+        // if (added.size() % 10000 == 0) cerr << added.size() << endl;
+
         for (pair<int, int> i : d) {
             if (available(x + i.first, y + i.second)) {
                 v[x + i.first][y + i.second] = cmp;
-                q.push({x + i.first, y + i.second});
-                cnt++;
+                added.insert({x + i.first, y + i.second});
+                // if (added.size() % 10000 == 0) cerr << added.size() << endl;
+                for (pair<int, int> j : d) {
+                    if (available(x + i.first + j.first, y + i.second + j.second))
+                        q.insert({x + i.first + j.first, y + i.second + j.second});
+                }
             }
         }
-        if (!cnt) ret++;
+    }
+    cerr << "Done adding!" << endl;
+
+    int ret = 0;
+    for (pair<int, int> i : added) {
+        v[i.first][i.second] = 0;
+        ret += available(i.first, i.second);
+        v[i.first][i.second] = cmp;
     }
     return ret;
 }
 
 int main() {
-    srand(69420);
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
+    srand(652365);
     cin >> l >> w >> k;
     FOR(i, 1, l + 1) FOR(j, 1, w + 1) cin >> grid[i][j];
 
@@ -47,11 +80,14 @@ int main() {
     random_shuffle(to_process.begin(), to_process.end());
 
     pair<int, pair<int, int>> opt = {0, {1, 1}};
+    cerr << "Starting..." << endl;
     for (pair<int, int> i : to_process) if (available(i.first, i.second)) {
         opt = max(opt, {bfs(i.first, i.second), {i.first, i.second}});
+        cerr << "BFSed " << cmp << " times" << endl;
         cmp++;
+        if (cmp == 11) break;
     }
-    cerr << min(10.0, 10.0 * opt.first / k) << '\n';
+    cerr << k << ' ' << opt.first << ' ' << min(10.0, 10.0 * opt.first / k) << endl;
 
     FOR(i, 1, l + 1) {
         FOR(j, 1, w + 1) {
