@@ -16,10 +16,18 @@ void construct(int n, int l_start, int r_start) {
         return;
     }
 
-    int b_size = (n + T - 1) / T, rem = n;
-    FOR(i, 0, T) {
-        b_size = min(b_size, rem);
-        if (!b_size) return;
+    int rem = n;
+    FOR(i, 0, n % T) {
+        int b_size = n / T + 1;
+        FOR(j, 0, n) {
+            edges.push_back({l_start + j, nodes + j % b_size});
+        }
+        construct(b_size, nodes + 1, r_start + n - rem);
+        rem -= b_size;
+    }
+    if (n < T) return;
+    FOR(i, n % T, T) {
+        int b_size = n / T;
         FOR(j, 0, n) {
             edges.push_back({l_start + j, nodes + j % b_size});
         }

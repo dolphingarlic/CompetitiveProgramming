@@ -8,7 +8,7 @@ using namespace std;
 const double PI = 4 * atan(1);
 
 struct Event {
-    int type, id;
+    short type, id;
     pair<ll, ll> loc;
 };
 
