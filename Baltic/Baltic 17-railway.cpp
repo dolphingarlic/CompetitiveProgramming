@@ -1,18 +1,16 @@
 /*
 Baltic 2017 Railway
-- Just use 2 BITs and binary lifting to increment each edge on each spanning tree
+- Just use a BIT and binary lifting to increment each edge on each spanning tree
 - Complexity: O(M log^2 N)
 */
 
 #include <bits/stdc++.h>
-typedef long long ll;
 using namespace std;
 
 int n, m, k;
 vector<pair<int, int>> graph[100001];
 int tin[100001], tout[100001], timer = 0, anc[100001][20], p_edge[100001];
-int chosen[50001];
-int bit1[100001], bit2[100001];
+int chosen[50001], bit[100001];
 
 void dfs(int node = 1, int parent = 0) {
     tin[node] = ++timer;
@@ -37,11 +35,11 @@ int lca(int a, int b) {
     return anc[a][0];
 }
 
-void update(int bit[100001], int pos, int val) {
+void update(int pos, int val) {
     for (; pos <= n; pos += pos & (-pos)) bit[pos] += val;
 }
 
-int query(int bit[100001], int a, int b) {
+int query(int a, int b) {
     int ans = 0;
     for (; b; b -= b & (-b)) ans += bit[b];
     for (a--; a; a -= a & (-a)) ans -= bit[a];
@@ -58,55 +56,24 @@ int main() {
         graph[a].push_back({b, i});
         graph[b].push_back({a, i});
     }
-
     dfs();
-
     while (m--) {
         int s, l;
         cin >> s;
+        for (int i = 0; i < s; i++) cin >> chosen[i];
+        sort(chosen, chosen + s, [](int A, int B) { return tin[A] < tin[B]; });
+        chosen[s] = chosen[0];
         for (int i = 0; i < s; i++) {
-            cin >> chosen[i];
-            if (!i) l = chosen[i];
-            else l = lca(l, chosen[i]);
-        }
-        for (int i = 0; i < s; i++) {
-            int curr = chosen[i];
-            if (curr == l) continue;
-            for (int j = 19; ~j; j--) {
-                int nxt = anc[curr][j];
-                if (nxt && !is_ancestor(nxt, l) && !query(bit2, tin[nxt], tout[nxt])) {
-                    update(bit1, tin[curr], 1);
-                    update(bit2, tin[curr], 1);
-                    update(bit1, tin[nxt], -1);
-                    update(bit2, tin[nxt], -1);
-                    curr = nxt;
-                }
-            }
-            update(bit1, tin[curr], 1);
-            update(bit2, tin[curr], 1);
-            update(bit1, tin[anc[curr][0]], -1);
-            update(bit2, tin[anc[curr][0]], -1);
-        }
-        for (int i = 0; i < s; i++) {
-            int curr = chosen[i];
-            if (curr == l) continue;
-            for (int j = 19; ~j; j--) {
-                int nxt = anc[curr][j];
-                if (nxt && !is_ancestor(nxt, l) && query(bit2, tin[nxt], tout[nxt])) {
-                    update(bit2, tin[curr], -1);
-                    update(bit2, tin[nxt], 1);
-                    curr = nxt;
-                }
-            }
-            update(bit2, tin[curr], -1);
-            update(bit2, tin[anc[curr][0]], 1);
+            int l = lca(chosen[i], chosen[i + 1]);
+            update(tin[chosen[i]], 1);
+            update(tin[chosen[i + 1]], 1);
+            update(tin[l], -2);
         }
     }
-
     vector<int> ans;
-    for (int i = 2; i <= n; i++) if (query(bit1, tin[i], tout[i]) >= k) {
-        ans.push_back(p_edge[i]);
-    }
+    for (int i = 2; i <= n; i++)
+        if (query(tin[i], tout[i]) >= 2 * k)
+            ans.push_back(p_edge[i]);
     sort(ans.begin(), ans.end());
     cout << ans.size() << '\n';
     for (int i : ans) cout << i << ' ';
