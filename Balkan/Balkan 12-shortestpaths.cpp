@@ -7,7 +7,7 @@ Balkan 2012 Shortest Paths
     - This means the shortest path must be of the form A->U->V->B where
       U and V are connected by 1 edge and U and V are in separate smaller trees
 - Notice how for each edge (U, V, C), it is only valid for removed edges between lca(U, B) and lca(V, B)
-    - This means we just update all nodes between those 2 nodes to be the minimum A->U + U->V + V->C
+    - This means we just update all edges between those 2 nodes to be the minimum A->U + U->V + V->B
 - Complexity: O(N^2 + M log N)
 */
 
