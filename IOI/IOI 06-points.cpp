@@ -18,9 +18,8 @@ struct Point {
 
 vector<Point> filter(Point a, Point b, Point c, vector<Point> pset) {
     vector<Point> ret;
-    for (Point i : pset) {
+    for (Point i : pset)
         if (i != a && i != b && i != c && i.inside(a, b, c)) ret.push_back(i);
-    }
     return ret;
 }
 
@@ -33,12 +32,12 @@ void solve(Point b1, Point b2, Point a, char colour, vector<Point> pset_r,
 
     if (filtered_r.size() && filtered_g.size()) {
         if (colour == 'r') {
-            Point n = filtered_g[rand() % filtered_g.size()];
+            Point n = filtered_g[0];
             solve(b1, b2, n, 'r', filtered_r, filtered_g, false);
             solve(a, n, b2, 'g', filtered_r, filtered_g);
             solve(n, a, b1, 'g', filtered_r, filtered_g, false);
         } else {
-            Point n = filtered_r[rand() % filtered_r.size()];
+            Point n = filtered_r[0];
             solve(b1, b2, n, 'g', filtered_r, filtered_g, false);
             solve(a, n, b2, 'r', filtered_r, filtered_g);
             solve(n, a, b1, 'r', filtered_r, filtered_g, false);
