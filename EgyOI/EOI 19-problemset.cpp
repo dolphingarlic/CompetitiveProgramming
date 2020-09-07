@@ -1,17 +1,62 @@
+/*
+EOI 2019 Problemset (90 points)
+- Send the original array + 64 zeroes + an extra copy of any value with >= 64 occurrences
+- N + 2sqrt(N) values sent
+*/
+
 #include <bits/stdc++.h>
 
 using namespace std;
 
-vector<int> global;
-
 vector<int> Encode(vector<int> a, int st) {
-    global.clear();
-    for (int i : a) global.push_back(i);
-    return {};
+    vector<int> ret;
+    map<int, int> cnt;
+    for (int i : a) cnt[i]++;
+    int mx = 0;
+    for (pair<int, int> i : cnt) {
+        if (i.second >= 64) {
+            for (int j = 0; j <= i.second; j++) {
+                ret.push_back(i.first);
+            }
+        } else {
+            for (int j = 0; j < i.second; j++) {
+                ret.push_back(i.first);
+            }
+            mx = max(mx, i.second);
+        }
+    }
+    for (int i = 0; i <= mx; i++) ret.push_back(0);
+    return ret;
 }
 
 vector<int> Decode(int n, vector<int> em, int st) {
-    return global;
+    vector<int> raw, ret;
+    map<int, int> cnt;
+    for (int i : em) cnt[i]++;
+    int mx_cnt = 0, mx = -1;
+    for (pair<int, int> i : cnt) {
+        if (i.second > 64) {
+            for (int j = 1; j < i.second; j++) {
+                raw.push_back(i.first);
+            }
+        } else {
+            if (i.second > mx_cnt) {
+                if (~mx) {
+                    for (int j = 0; j < mx_cnt; j++) {
+                        raw.push_back(mx);
+                    }
+                }
+                tie(mx, mx_cnt) = i;
+            } else {
+                for (int j = 0; j < i.second; j++) {
+                    raw.push_back(i.first);
+                }
+            }
+        }
+    }
+    for (int i : raw) ret.push_back(mx ^ i);
+    sort(ret.begin(), ret.end());
+    return ret;
 }
 
 void WA(const char *msg) {
