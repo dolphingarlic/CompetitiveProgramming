@@ -1,3 +1,14 @@
+/*
+IOI 2020 Gift
+- First, split the segments into x[i] = 1 and x[i] = 2
+- Merge all x[i] = 1 segments that overlap and kinda squish them into 1 square
+    - Then colour the bracelet alternating RBRBRB...
+- Finally, check whether this satisfies all the x[i] = 2 segments
+    - Such a segment is bad iff a[i] = b[i] or [a[i], b[i]] is a subsegment of some
+      union of the x[i] = 1 segments
+- Complexity: O(N log N)
+*/
+
 #include "gift.h"
 
 #include <bits/stdc++.h>
