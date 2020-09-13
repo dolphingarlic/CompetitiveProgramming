@@ -1,6 +1,6 @@
 /*
 IOI 2020 Routers
-- We basically want to find the medians of each segment
+- We basically want to find the midpoints of each segment
 - First, binary search for the ranges containing exactly 1 median
 - Then we binary search on each of these ranges for the actual medians
 - Complexity: At most 7500 queries
