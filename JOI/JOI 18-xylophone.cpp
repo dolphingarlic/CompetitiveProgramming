@@ -6,7 +6,7 @@ bool visited[5001];
 void update(int pos, int val) {
     A[pos] = val;
     visited[val] = true;
-	answer(pos, val);
+    answer(pos, val);
 }
 
 void solve(int N) {

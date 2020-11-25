@@ -22,30 +22,30 @@ int a[N], k[N];
 pair<int, int> dp[HM][HM][11], ans[N];
 
 int main() {
-	int n;
-	scanf("%d", &n);
-	for (int i = 1; i <= n; i++) scanf("%d", a + i);
-	for (int i = 1; i <= n; i++) {
-		scanf("%d", k + i);
-		pair<int, int> best = {0, 0};
-		for (int j = 0; j < HM; j++)
-			if (popcnt(a[i] & j) <= k[i] && k[i] - popcnt(a[i] & j) <= 10)
-				best = max(best, dp[j][a[i] >> 10][k[i] - popcnt(a[i] & j)]);
-		best.first++;
-		ans[i] = best;
-		for (int j = 0; j < HM; j++)
-			dp[a[i] & HM - 1][j][popcnt((a[i] >> 10) & j)] = max(dp[a[i] & HM - 1][j][popcnt((a[i] >> 10) & j)], {best.first, i});
-	}
-	int idx = max_element(ans + 1, ans + n + 1) - ans;
-	printf("%d\n", ans[idx].first);
-	stack<int> seq;
-	while (idx) {
-		seq.push(idx);
-		idx = ans[idx].second;
-	}
-	while (seq.size()) {
-		printf("%d ", seq.top());
-		seq.pop();
-	}
-	return 0;
+    int n;
+    scanf("%d", &n);
+    for (int i = 1; i <= n; i++) scanf("%d", a + i);
+    for (int i = 1; i <= n; i++) {
+        scanf("%d", k + i);
+        pair<int, int> best = {0, 0};
+        for (int j = 0; j < HM; j++)
+            if (popcnt(a[i] & j) <= k[i] && k[i] - popcnt(a[i] & j) <= 10)
+                best = max(best, dp[j][a[i] >> 10][k[i] - popcnt(a[i] & j)]);
+        best.first++;
+        ans[i] = best;
+        for (int j = 0; j < HM; j++)
+            dp[a[i] & HM - 1][j][popcnt((a[i] >> 10) & j)] = max(dp[a[i] & HM - 1][j][popcnt((a[i] >> 10) & j)], {best.first, i});
+    }
+    int idx = max_element(ans + 1, ans + n + 1) - ans;
+    printf("%d\n", ans[idx].first);
+    stack<int> seq;
+    while (idx) {
+        seq.push(idx);
+        idx = ans[idx].second;
+    }
+    while (seq.size()) {
+        printf("%d ", seq.top());
+        seq.pop();
+    }
+    return 0;
 }

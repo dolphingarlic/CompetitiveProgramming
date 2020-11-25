@@ -33,7 +33,7 @@ int find(int A) {
 }
 
 int main() {
-	scanf("%d %d", &n, &k);
+    scanf("%d %d", &n, &k);
     for (int i = 1; i < n; i++) {
         int u, v;
         scanf("%d %d", &u, &v);
@@ -55,6 +55,6 @@ int main() {
             b = cmp[b] = find(par[b]);
         }
     }
-	printf("%d", ans);
+    printf("%d", ans);
     return 0;
 }

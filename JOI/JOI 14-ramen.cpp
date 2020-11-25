@@ -3,7 +3,7 @@ JOI 2014 Ramen
 - 2N queries: Keep a running lo/hi and update it for every element
 - 1.5N queries: Instead of comparing each element with lo/hi, compare
                 it with its neighbour and compare the lower/greater
-				with lo/hi accordingly
+                with lo/hi accordingly
 */
 
 #include "ramen.h"

@@ -56,10 +56,10 @@ bool check() {
 bool init(int coinsCount, long long maxCoinSize, long long coins[]) {
     root = new Node(1, maxCoinSize);
     for (int i = 0; i < coinsCount; i++) root->update(coins[i], coins[i]);
-	return check();
+    return check();
 }
 
 bool is_happy(int event, int coinsCount, long long coins[]) {
-	for (int i = 0; i < coinsCount; i++) root->update(coins[i], event * coins[i]);
+    for (int i = 0; i < coinsCount; i++) root->update(coins[i], event * coins[i]);
     return check();
 }
