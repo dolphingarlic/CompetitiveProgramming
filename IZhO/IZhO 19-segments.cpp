@@ -7,29 +7,25 @@ IZhO 2019 Bigger Segments
 - Complexity: O(N)
 */
 
-#include <bits/stdc++.h>
-typedef long long ll;
-using namespace std;
+#include <stdio.h>
 
-ll a[500001], pref[500001];
-pair<int, ll> dp[500001];
+long pref[500001], dp_cost[500001];
+int dp_cnt[500001], lptr, rptr, dq[500001];
 
 int main() {
-    ios_base::sync_with_stdio(0);
-    cin.tie(0);
     int n;
-    cin >> n;
-    deque<int> dq = {0};
-    for (int i = 1; i <= n; i++) {
-        cin >> a[i];
-        pref[i] = pref[i - 1] + a[i];
-        while (dq.size() > 1 && pref[i] - pref[dq[1]] >= dp[dq[1]].second)
-            dq.pop_front();
-        dp[i] = {dp[dq[0]].first + 1, pref[i] - pref[dq[0]]};
-        while (dq.size() && dp[dq.back()].second - dp[i].second >= pref[i] - pref[dq.back()])
-            dq.pop_back();
-        dq.push_back(i);
+    scanf("%d", &n);
+    for (int i = 1; i <= n; ++i) {
+        scanf("%ld", pref + i);
+        pref[i] += pref[i - 1];
+        while (rptr - lptr && pref[i] - pref[dq[lptr + 1]] >= dp_cost[dq[lptr + 1]])
+            ++lptr;
+        dp_cnt[i] = dp_cnt[dq[lptr]] + 1;
+        dp_cost[i] = pref[i] - pref[dq[lptr]];
+        while (dp_cost[dq[rptr]] - dp_cost[i] >= pref[i] - pref[dq[rptr]])
+            --rptr;
+        dq[++rptr] = i;
     }
-    cout << dp[n].first;
+    printf("%d", dp_cnt[n]);
     return 0;
 }
