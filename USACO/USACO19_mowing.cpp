@@ -4,19 +4,20 @@ USACO 2019 Mowing
 */
 
 #include <bits/stdc++.h>
-#define FOR(i, x, y) for (int i = x; i < y; i++)
-#define x first
-#define y second
 typedef long long ll;
 using namespace std;
 
+struct Point {
+    int id, x, y;
+};
+
 pair<int, int> f[200002];
 vector<int> lis;
-vector<vector<pair<int, pair<int, int>>>> has_lis;
+vector<vector<Point>> has_lis;
 ll dp[200002];
 
-ll eval(int idx, pair<int, int> a, pair<int, int> b) {
-    return dp[idx] + ll(a.x - b.x) * ll(a.y - b.y);
+ll eval(int id, int ax, int ay, int bx, int by) {
+    return dp[id] + ll(ax - bx) * ll(ay - by);
 }
 
 int main() {
@@ -24,32 +25,31 @@ int main() {
     cin.tie(0);
     ifstream cin("mowing.in");
     ofstream cout("mowing.out");
-
     int n, t;
     cin >> n >> t;
-    FOR(i, 0, n) cin >> f[i].x >> f[i].y;
+    for (int i = 0; i < n; i++) cin >> f[i].first >> f[i].second;
     f[n++] = {0, 0};
     f[n++] = {t, t};
     sort(f, f + n);
 
-    FOR(i, 0, n) {
-        int pos = lower_bound(lis.begin(), lis.end(), f[i].y) - lis.begin();
+    for (int i = 0; i < n; i++) {
+        int pos = lower_bound(lis.begin(), lis.end(), f[i].second) - lis.begin();
         if (pos == lis.size()) {
-            lis.push_back(f[i].y);
-            has_lis.push_back({{i, f[i]}});
+            lis.push_back(f[i].second);
+            has_lis.push_back({{i, f[i].first, f[i].second}});
         } else {
-            lis[pos] = f[i].y;
-            has_lis[pos].push_back({i, f[i]});
+            lis[pos] = f[i].second;
+            has_lis[pos].push_back({i, f[i].first, f[i].second});
         }
     }
 
-    FOR(i, 1, has_lis.size()) {
-        for (auto j : has_lis[i]) {
-            dp[j.x] = LLONG_MAX;
-            for (auto k : has_lis[i - 1]) {
-                if (k.y.x < j.y.x) {
-                    if (k.y.y < j.y.y) {
-                        dp[j.x] = min(dp[j.x], eval(k.x, k.y, j.y));
+    for (int i = 1; i < has_lis.size(); i++) {
+        for (Point j : has_lis[i]) {
+            dp[j.id] = LLONG_MAX;
+            for (Point k : has_lis[i - 1]) {
+                if (k.x < j.x) {
+                    if (k.y < j.y) {
+                        dp[j.id] = min(dp[j.id], eval(k.id, k.x, k.y, j.x, j.y));
                     }
                 } else break;
             }
