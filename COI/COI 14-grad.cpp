@@ -20,6 +20,7 @@ COI 2014 Grad
   in AG in O(log N) time using LCA + binary lifting!
 - To find the shortest path between cities x and y, simply find the
   "shortest path" between two nodes in AG that contain x and y respectively
+- Complexity: O(N log N)
 */
 
 #include <bits/stdc++.h>
