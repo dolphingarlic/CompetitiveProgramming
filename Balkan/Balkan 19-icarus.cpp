@@ -1,12 +1,6 @@
 /*
-SACO 2013 Fetching Rum
-- Binary search for the answer: if we can achieve x, then we can also achieve x - k
-- Let the current candidate be max_wait
-- dp[i] = min(max(a[i], dp[j] + m) : max(a[i], dp[j] + m) <= a[j + 1] + max_wait)
-    - If there are no j's satisfying the condition, then max_wait can't be achieved
-- Since dp is monotone and m and max_wait are fixed, we can just use two pointers
-  to calculate dp in O(N)
-- Complexity: O(N log M)
+Balkan 2019 Icarus
+- Same problem as SACO 2013 Fetching Rum lol
 */
 
 #include <bits/stdc++.h>
