@@ -6,7 +6,7 @@ Balkan 2019 Clear the Memory
     1) Set a 1 in [1, pref] to 0
     2) Push a program into the queue when all its 1s in [1, pref] have
        been set to 0s
-- For the first operation, a simple std::set sufficies
+- For the first operation, a simple std::set suffices
 - For the second operation, we use a min segtree
     - We try to run operation 2 each time a bit x has been set to 0
     - First, find l and r such that l <= x <= r and [l, r] is as large as possible
