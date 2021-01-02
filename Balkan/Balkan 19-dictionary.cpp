@@ -69,6 +69,7 @@ int main() {
     cin >> a >> m >> n >> q;
     ll curr_hsh = 0, curr_pw = 1;
     map<ll, vector<int>> has_hsh;
+    has_hsh[0].push_back(0);
     for (int i = 1; i <= n; i++) {
         ll t;
         cin >> t;
