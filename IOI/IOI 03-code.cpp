@@ -2,119 +2,98 @@
 typedef long long ll;
 using namespace std;
 
-array<int, 3> rbn[1001], hal[1001];
-int len[2002], cnt[2002][3003];
-pair<int, int> corresp[2002][3003];
+int r, h, r_cnt = 0, h_cnt = 0;
+map<string, int> r_mp, h_mp;
+int r_left[1000], h_left[1000];
+pair<int, int> r_right[1000], h_right[1000];
+int r_prv[3000], h_prv[3000], r_known[3000], h_known[3000];
 
-pair<int, int> intersect(pair<int, int> a, pair<int, int> b) {
-    if (a.first == b.first) {
-        if (a.second == b.second) return a;
-        return {a.first, 0};
-    } else if (a.first == b.second) return {a.first, 0};
-    else if (a.second == b.first) return {a.second, 0};
-    else if (a.second == b.second) return {a.second, 0};
-    return {0, 0};
-}
+bool good(int i, int j) {
+    // Right sides don't match up
+    if (~r_known[r_left[i]] && r_known[r_left[i]] != h_left[j]) return false;
 
-bool bad(int idx, array<int, 3> a, array<int, 3> b) {
-    if (!intersect(corresp[idx][a[0]], {b[0], 0}).first) return true;
-    if (!intersect(corresp[idx][b[0]], {a[0], 0}).first) return true;
-
-    // Check others
-    
-    return false;
-}
-
-void del_line(int idx, array<int, 3> a, array<int, 3> b) {
-    for (int i = 0; i < 3; i++) {
-        cnt[idx][a[i]]--;
-        cnt[idx][b[i]]--;
+    // We know both variables on the left side
+    if (~r_known[r_right[i].first] && ~r_known[r_right[i].second]) {
+        if (make_pair(min(r_known[r_right[i].first], r_known[r_right[i].second]),
+                      max(r_known[r_right[i].first], r_known[r_right[i].second]))
+            != h_right[i])
+            return false;
+    }
+    // We know only r_right[i].first
+    if (~r_known[r_right[i].first]) {
+        if (r_known[r_right[i].first] != h_right[i].first && r_known[r_right[i].first] != h_right[i].second)
+            return false;
+    }
+    // We know only r_right[i].second
+    if (~r_known[r_right[i].second]) {
+        if (r_known[r_right[i].second] != h_right[i].first && r_known[r_right[i].second] != h_right[i].second)
+            return false;
     }
 
-    // Change corresp
-}
+    // We know neither right-hand-side variable, so we check the other program
 
-void add_line(int idx, array<int, 3> a, array<int, 3> b) {
-    corresp[idx][a[0]] = {b[0], 0};
-    corresp[idx][b[0]] = {a[0], 0};
-
-    if (!cnt[idx][a[1]]) corresp[idx][a[1]] = {b[1], b[2]};
-    if (!cnt[idx][a[2]]) corresp[idx][a[2]] = {b[1], b[2]};
-    pair<int, int> ia1 = intersect(corresp[idx][a[1]], {b[1], b[2]});
-    pair<int, int> ia2 = intersect(corresp[idx][a[2]], {b[1], b[2]});
-    if (ia1.second) {
-        if (ia2.second) corresp[idx][a[1]] = corresp[idx][a[2]] = ia1;
-        else {
-            corresp[idx][a[2]] = ia2;
-            if (ia2.first == b[1]) corresp[idx][a[1]] = {b[2], 0};
-            else corresp[idx][a[1]] = {b[1], 0};
-        }
-    } else {
-        corresp[idx][a[1]] = ia1;
-        if (ia1.first == b[1]) corresp[idx][a[2]] = {b[2], 0};
-        else corresp[idx][a[2]] = {b[1], 0};
+    // We know both variables on the left side
+    if (~h_known[h_right[i].first] && ~h_known[h_right[i].second]) {
+        if (make_pair(min(h_known[h_right[i].first], h_known[h_right[i].second]),
+                      max(h_known[h_right[i].first], h_known[h_right[i].second]))
+            != r_right[i])
+            return false;
+    }
+    // We know only h_right[i].first
+    if (~h_known[h_right[i].first]) {
+        if (h_known[h_right[i].first] != r_right[i].first && h_known[h_right[i].first] != r_right[i].second)
+            return false;
+    }
+    // We know only h_right[i].second
+    if (~h_known[h_right[i].second]) {
+        if (h_known[h_right[i].second] != r_right[i].first && h_known[h_right[i].second] != r_right[i].second)
+            return false;
     }
 
-    if (!cnt[idx][b[1]]) corresp[idx][b[1]] = {a[1], a[2]};
-    if (!cnt[idx][b[2]]) corresp[idx][b[2]] = {a[1], a[2]};
-    pair<int, int> ib1 = intersect(corresp[idx][b[1]], {a[1], a[2]});
-    pair<int, int> ib2 = intersect(corresp[idx][b[2]], {a[1], a[2]});
-    if (ib1.second) {
-        if (ib2.second) corresp[idx][b[1]] = corresp[idx][b[2]] = ib1;
-        else {
-            corresp[idx][b[2]] = ib2;
-            if (ib2.first == a[1]) corresp[idx][b[1]] = {a[2], 0};
-            else corresp[idx][b[1]] = {a[1], 0};
-        }
-    } else {
-        corresp[idx][b[1]] = ib1;
-        if (ib1.first == a[1]) corresp[idx][b[2]] = {a[2], 0};
-        else corresp[idx][b[2]] = {a[1], 0};
-    }
-
-    for (int i = 0; i < 3; i++) {
-        cnt[idx][a[i]]++;
-        cnt[idx][b[i]]++;
-    }
+    // No conflicts
+    return true;
 }
 
 int main() {
-    iostream::sync_with_stdio(false);
-    cin.tie(0);
-    int n, m;
-    cin >> n >> m;
-    map<string, int> hsh;
-    for (int i = 1, cnt = 1; i <= n; i++) {
-        string a, b, c, t;
-        cin >> a >> t >> b >> t >> c;
-        if (!hsh.count(a)) hsh[a] = cnt++;
-        if (!hsh.count(b)) hsh[b] = cnt++;
-        if (!hsh.count(c)) hsh[c] = cnt++;
-        rbn[i] = {hsh[a], hsh[b], hsh[c]};
-        if (hsh[b] > hsh[c]) swap(rbn[i][1], rbn[i][2]);
+    cin.tie(0)->sync_with_stdio(0);
+
+    cin >> r >> h;
+    for (int i = 0; i < r; i++) {
+        string s1, s2, s3, tmp;
+        cin >> s1 >> tmp >> s2 >> tmp >> s3 >> tmp;
+        if (r_mp.find(s1) == r_mp.end()) r_mp[s1] = r_cnt++;
+        if (r_mp.find(s2) == r_mp.end()) r_mp[s2] = r_cnt++;
+        if (r_mp.find(s3) == r_mp.end()) r_mp[s3] = r_cnt++;
+        r_left[i] = r_mp[s1];
+        r_right[i] = {r_mp[s2], r_mp[s3]};
+        if (r_right[i].first > r_right[i].second) swap(r_right[i].first, r_right[i].second);
     }
-    hsh.clear();
-    for (int i = 1, cnt = 1; i <= m; i++) {
-        string a, b, c, t;
-        cin >> a >> t >> b >> t >> c;
-        if (!hsh.count(a)) hsh[a] = cnt++;
-        if (!hsh.count(b)) hsh[b] = cnt++;
-        if (!hsh.count(c)) hsh[c] = cnt++;
-        hal[i] = {hsh[a], hsh[b], hsh[c]};
-        if (hsh[b] > hsh[c]) swap(hal[i][1], hal[i][2]);
+    for (int i = 0; i < h; i++) {
+        string s1, s2, s3, tmp;
+        cin >> s1 >> tmp >> s2 >> tmp >> s3 >> tmp;
+        if (h_mp.find(s1) == h_mp.end()) h_mp[s1] = h_cnt++;
+        if (h_mp.find(s2) == h_mp.end()) h_mp[s2] = h_cnt++;
+        if (h_mp.find(s3) == h_mp.end()) h_mp[s3] = h_cnt++;
+        h_left[i] = h_mp[s1];
+        h_right[i] = {h_mp[s2], h_mp[s3]};
+        if (h_right[i].first > h_right[i].second) swap(h_right[i].first, h_right[i].second);
     }
 
     int ans = 0;
-    for (int i = 1; i <= n; i++) {
-        for (int j = 1; j <= m; j++) {
-            int idx = j - i + n;
-            while (bad(idx, rbn[i], hal[j])) {
-                del_line(idx, rbn[i - len[idx]], hal[i - len[idx]]);
-                len[idx]--;
+    for (int delta = -h + 1; delta < r; delta++) {
+        fill(r_known, r_known + 3 * r, -1);
+        fill(h_known, h_known + 3 * r, -1);
+
+        int i_lptr = max(0, delta);
+        int j_lptr = i_lptr - delta;
+        for (int i = i_lptr, j = j_lptr; i < r && j < h; i++, j++) {
+            while (!good(i, j)) {
+                // TODO: Erase programs i_lptr/j_lptr from the thing
+                i_lptr++, j_lptr++;
             }
-            add_line(idx, rbn[i], hal[j]);
-            len[idx]++;
-            ans = max(ans, len[idx]);
+            ans = max(ans, i - i_lptr + 1);
+            // TODO: Add programs i/j to the thing
+            r_known[r_left[i]] = h_left[j], h_known[h_left[j]] = r_left[i];
         }
     }
     cout << ans;
