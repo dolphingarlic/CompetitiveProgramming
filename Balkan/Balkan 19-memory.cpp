@@ -1,5 +1,6 @@
 /*
 Balkan 2019 Clear the Memory
+- Statement here: http://81.4.170.42:8980/training/#/task/memory/statement
 - When we check a candidate pref, we do a reverse BFS
 - Initially, we only process the programs with no 1s in [1, pref]
 - We need a data structure that supports the following two operations:
@@ -7,14 +8,20 @@ Balkan 2019 Clear the Memory
     2) Push a program into the queue when all its 1s in [1, pref] have
        been set to 0s
 - For the first operation, a simple std::set suffices
-- For the second operation, we use a min segtree
+- For the second operation, we use a min segment tree
     - We try to run operation 2 each time a bit x has been set to 0
     - First, find l and r such that l <= x <= r and [l, r] is as large as possible
     - Next, we use the segtree to find all ranges completely contained in [l, r]
     - Finally, we can decrement a counter for each program of each range
     - When the counter reaches 0, we push the program into the queue
 - pref works iff each bit in [1, pref] has been set to 0
-- To avoid binsearch, we do magic greedy stuff that I'm too tired to explain
+- To avoid binsearch, we greedily try to satisfy the largest possible pref and
+  if that prefix fails, we try to satisfy (pref - 1)
+    - The trick is that we still only process each program once because if
+      it gets processed when trying pref, then it will also get processed
+      when trying prefix - k for any k
+        - This means we can just process any given program for large pref and
+          never process it again!
 - Complexity: O(M log M)
 */
 

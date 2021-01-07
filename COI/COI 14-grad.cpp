@@ -1,5 +1,6 @@
 /*
 COI 2014 Grad
+- Statement here: http://oj.uz/problem/view/COI14_grad
 - Let OG be the original graph and AG be an auxilliary graph
     - (cities, roads) = OG
     - (nodes, edges) = AG

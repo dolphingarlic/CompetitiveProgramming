@@ -1,5 +1,6 @@
 /*
 SACO 2017 Stargazing
+- Statement here: https://olympiad.org.za/programming-olympiad/wp-content/uploads/sites/4/2017/10/2017-PO-Finals-Day-1.pdf#page=3
 - A rhombus is kinda inconvenient, so apply the transformation
   (x, y) -> (x + y, x - y) to rotate everything by 45 degrees
     - Manhattan distance becomes Chebyshev distance, so now each

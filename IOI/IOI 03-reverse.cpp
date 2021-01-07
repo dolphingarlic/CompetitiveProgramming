@@ -1,6 +1,7 @@
 /*
 IOI 2003 Reverse
-- https://codeforces.com/blog/entry/75726
+- Statement here: https://oj.uz/problem/view/IOI03_reverse
+- See my (unofficial) editorial here: https://codeforces.com/blog/entry/75726
 */
 
 #include <bits/stdc++.h>
