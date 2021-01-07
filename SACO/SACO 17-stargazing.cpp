@@ -1,3 +1,28 @@
+/*
+SACO 2017 Stargazing
+- A rhombus is kinda inconvenient, so apply the transformation
+  (x, y) -> (x + y, x - y) to rotate everything by 45 degrees
+    - Manhattan distance becomes Chebyshev distance, so now each
+      query is on a square (much more convenient)
+- Although there are O(N^2) pairs of stars we can connect in
+  all constellations, notice how we only care about connectivity
+    - This means we only need to consider four "critical stars"
+      in each quadrant
+    - These stars are the ones with the lowest discovery time
+    - If those stars are connected to star i, so is each other
+      star in its quadrant
+    - This reduces the number of pairs to O(N)
+- To find the four "critical stars" for each star, we do four
+  separate line sweeps
+    - Each line sweep find the "critical star" in quadrant 1
+      and then rotates everything by 90 degrees for convenience
+    - To do RMQ efficiently, we use a segment tree and an array of std::sets
+        - Ranges are small (yay!), so no need for a sparse segtree
+- Finally, we process each star by discovery time and join pairs
+  using DSU
+- Complexity: O(N log N)
+*/
+
 #include <bits/stdc++.h>
 #define FOR(i, x, y) for (int i = x; i < y; i++)
 typedef long long ll;
