@@ -1,6 +1,6 @@
-# OI Solutions
+# Competitive Programming (OI Solutions)
 
-This is a collection of the various olympiad problems I have solved
+This is a collection of the various Olympiad problems I've solved
 
 ## Currently available Olympiads
 
@@ -36,6 +36,18 @@ This is a collection of the various olympiad problems I have solved
 
 [The Estonian Informatics Olympiad](http://eio.ee/)
 
+### FXCUP
+
+The oj.uz Function Cup
+
+### info1cup
+
+The InfO(1) Cup (Romanian?)
+
+### Innopolis
+
+The Innopolis Open Olympiad
+
 ### IOI
 
 [The International Olympiad in Informatics](https://ioinformatics.org/)
@@ -48,7 +60,7 @@ This is a collection of the various olympiad problems I have solved
 
 [The Japanese Olympiad in Informatics](https://www.ioi-jp.org/)
 
-### LMIO
+### LMiO
 
 [The Lithuanian Informatics Olympiad](http://www.lmio.mii.vu.lt/)
 
@@ -64,9 +76,13 @@ This is a collection of the various olympiad problems I have solved
 
 [The National Olympiad in Informatics (Singapore)](https://noisg.comp.nus.edu.sg/noi/)
 
-### infoarena
+### infoarena/Romanian
 
 [The Romanian Olympiad in Informatics](https://infoarena.ro/)
+
+### PAIO
+
+The Pan-African Informatics Olympiad
 
 ### POI
 
@@ -79,3 +95,7 @@ This is a collection of the various olympiad problems I have solved
 ### USACO
 
 [The USA Computing Olympiad](http://usaco.org/)
+
+## Others
+
+### CSES
