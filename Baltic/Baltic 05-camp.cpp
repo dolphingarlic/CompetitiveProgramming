@@ -2,6 +2,7 @@
 Baltic 2005 Camouflage Camp
 - Just test each location and characteristic in O(RCK) time
 - Use 2D prefix sums to query range sums quickly
+- Also, break early when you're sure that a location certainly can't be the optimal one.
 */
 
 #include <bits/stdc++.h>
