@@ -3,7 +3,7 @@ using namespace std;
 
 int pref[100001], diff[100002];
 
-vector<int> events[100001];
+vector<int> events[100001], has_dp[100001];
 int latest[100001], dp[100001], cnt[100001];
 
 int main() {
@@ -60,7 +60,7 @@ int main() {
                 if (dp[j] < dp[i]) dp[i] = dp[j], cnt[i] = 0;
                 if (dp[j] == dp[i]) cnt[i]++;
             }
-            dp[i]++;
+            has_dp[++dp[i]].push_back(i);
         }
         if (*min_element(dp + latest[n], dp + n +  1) == k) {
             // There are potential ninjas to confirm
