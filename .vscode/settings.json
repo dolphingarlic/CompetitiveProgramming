@@ -4,6 +4,20 @@
         "chrono": "cpp",
         "random": "cpp",
         "limits": "cpp",
+<<<<<<< HEAD
         "valarray": "cpp"
+=======
+        "valarray": "cpp",
+        "array": "cpp",
+        "deque": "cpp",
+        "forward_list": "cpp",
+        "list": "cpp",
+        "unordered_map": "cpp",
+        "unordered_set": "cpp",
+        "vector": "cpp",
+        "string_view": "cpp",
+        "initializer_list": "cpp",
+        "regex": "cpp"
+>>>>>>> b241c34e50e2bf76ed7cd5a96feccdcb0b52b723
     }
 }
