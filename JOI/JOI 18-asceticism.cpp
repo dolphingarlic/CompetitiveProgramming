@@ -1,26 +1,41 @@
+/*
+JOI 2018 Asceticism
+- dp[i][j] = Number of permutations of length i with j indices x such that p[x] > p[x + 1]
+           = j * dp[i - 1][j] + (i - j + 1) * dp[i - 1][j - 1]
+           = A(i, j) i.e. an Eulerian number
+- Our answer is dp[N][K] = A(N, K)
+- There's an explicit formula for Eulerian numbers
+    - A(N, K) = sum((i - K)^N * (N + 1 choose i) for each i from 0 to K)
+    - Reference: https://en.wikipedia.org/wiki/Eulerian_number#Explicit_formula
+    - Proof: https://www.quora.com/Is-there-a-combinatorial-proof-of-the-closed-form-for-Eulerian-numbers
+- Complexity: O(N log N) because of modular inverses
+*/
+
 #include <bits/stdc++.h>
 typedef long long ll;
 using namespace std;
 
 const ll MOD = 1e9 + 7;
 
-ll choose[301][301], dp[301][301];
+ll expo(ll base, ll pow) {
+    ll ans = 1;
+    while (pow) {
+        if (pow & 1) ans = (ans * base) % MOD;
+        base = (base * base) % MOD;
+        pow >>= 1;
+    }
+    return ans;
+}
 
 int main() {
-    ios_base::sync_with_stdio(0);
-    cin.tie(0);
-    int n, m;
-    cin >> n >> m;
-    for (int i = 0; i <= n; i++) for (int j = 0; j <= i; j++) {
-        if (!j || j == i) choose[i][j] = 1;
-        else choose[i][j] = (choose[i - 1][j] + choose[i - 1][j - 1]) % MOD;
+    int n, k;
+    scanf("%d %d", &n, &k);
+    ll ans = 0, choose = 1, neg = 1;
+    for (int i = 0; i <= k; i++) {
+        ans = (ans + neg * choose % MOD * expo(k - i, n)) % MOD;
+        choose = choose * (n + 1 - i) % MOD * expo(i + 1, MOD - 2) % MOD;
+        neg = MOD - neg;
     }
-    dp[0][0] = 1;
-    for (int i = 1; i <= m; i++) for (int j = i; j <= n; j++) {
-        for (int k = 1; k <= j - i + 1; k++)
-            dp[i][j] = (dp[i][j] + choose[j][k] * dp[i - 1][j - k]) % MOD;
-        cout << i << ' ' << j << ' ' << dp[i][j] << '\n';
-    }
-    cout << dp[m][n];
+    printf("%lld", ans);
     return 0;
 }
