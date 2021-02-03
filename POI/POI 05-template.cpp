@@ -15,26 +15,23 @@ POI 2005 Template
     - i.e. S[P[|S| - 1] + 1 .. N - 1]
     - We want to find the number of matches with the candidate
 - Next, we can just check whether the max gap between candidates is at most |cand|
-- This seems like O(N^2), but we test each character in the suffix exactly once, so it's amortized O(N)
+- This seems like O(N^2), but we test each character in a relevant suffix exactly once, so it's amortized O(N)
 */
 
 #include <bits/stdc++.h>
-typedef long long ll;
 using namespace std;
 
 string s;
-int p1[500000], p2[500000];
+int p[500000];
 
 int shortest_template(int n) {
-    if (!p1[n - 1]) return n;
-    int cand = shortest_template(p1[n - 1]);
-    p2[p1[n - 1] - 1] = cand;
-    for (int i = p1[n - 1], curr = p1[n - 1] - 1; i < n; i++) {
-        p2[i] = p2[i - 1];
-        while (p2[i] && (p2[i] == cand || s[i] != s[p2[i]])) p2[i] = p1[p2[i] - 1];
-        if (s[i] == s[p2[i]]) p2[i]++;
+    if (!p[n - 1]) return n;
+    int cand = shortest_template(p[n - 1]);
+    for (int i = p[n - 1], j = cand, curr = p[n - 1] - 1; i < n; i++) {
+        while (j && (j == cand || s[i] != s[j])) j = p[j - 1];
+        if (s[i] == s[j]) j++;
 
-        if (p2[i] == cand) curr = i;
+        if (j == cand) curr = i;
         if (i - curr >= cand) return n;
     }
     return cand;
@@ -45,9 +42,9 @@ int main() {
     cin >> s;
     int n = s.size();
     for (int i = 1; i < n; i++) {
-        p1[i] = p1[i - 1];
-        while (p1[i] && s[i] != s[p1[i]]) p1[i] = p1[p1[i] - 1];
-        if (s[i] == s[p1[i]]) p1[i]++;
+        p[i] = p[i - 1];
+        while (p[i] && s[i] != s[p[i]]) p[i] = p[p[i] - 1];
+        if (s[i] == s[p[i]]) p[i]++;
     }
     cout << shortest_template(n);
     return 0;
