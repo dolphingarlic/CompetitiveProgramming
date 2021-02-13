@@ -123,6 +123,7 @@ unordered_map<int, bool> bad;
 unordered_map<int, unordered_set<int>> e_to_tri, tri_to_e;
 
 int main() {
+    cin.tie(0)->sync_with_stdio(0);
     srand(12345);
     int n, m;
     cin >> n >> m;
@@ -243,21 +244,27 @@ int main() {
                 cout << (((i < 2) ^ (j < 2)) && big[i][j]) << " \n"[j == m - 1];
         return 0;
     } else if (n == 3 && m == 74) {
+        vector<int> todo;
         for (int i = 0; i < m; i++)
-            for (int j = i + 1; j < m; j++)
-                for (int k = j + 1; k < m; k++)
-                    if (big[i][j] && big[j][k] && big[i][k]) {
-                        int tridx = m * m * i + m * j + k;
-                        e_to_tri[m * i + j].insert(tridx);
-                        e_to_tri[m * j + k].insert(tridx);
-                        e_to_tri[m * i + k].insert(tridx);
-                        tri_to_e[tridx].insert(m * i + j);
-                        tri_to_e[tridx].insert(m * j + k);
-                        tri_to_e[tridx].insert(m * i + k);
-                        to_consider.insert(m * i + j);
-                        to_consider.insert(m * j + k);
-                        to_consider.insert(m * i + k);
-                    }
+            if (accumulate(big[i], big[i] + m, 0) > 1) todo.push_back(i);
+        for (int _i = 0, i = todo[0]; _i < todo.size() - 2; i = todo[++_i])
+            for (int _j = _i + 1, j = todo[_i + 1]; _j < todo.size() - 1;
+                 j = todo[++_j])
+                if (big[i][j])
+                    for (int _k = _j + 1, k = todo[_j + 1]; _k < todo.size();
+                         k = todo[++_k])
+                        if (big[j][k] && big[i][k]) {
+                            int tridx = m * m * i + m * j + k;
+                            e_to_tri[m * i + j].insert(tridx);
+                            e_to_tri[m * j + k].insert(tridx);
+                            e_to_tri[m * i + k].insert(tridx);
+                            tri_to_e[tridx].insert(m * i + j);
+                            tri_to_e[tridx].insert(m * j + k);
+                            tri_to_e[tridx].insert(m * i + k);
+                            to_consider.insert(m * i + j);
+                            to_consider.insert(m * j + k);
+                            to_consider.insert(m * i + k);
+                        }
         while (to_consider.size()) {
             pair<int, int> best = {1, 0};
             for (int i : to_consider) best = max(best, {e_to_tri[i].size(), i});
@@ -281,22 +288,28 @@ int main() {
     }
 
     // Tests 9 and 10 - all triangles must be independent
-    if (n == 4 && m == 211) {
+    if (n == 4 && (m == 211 || m == 645)) {
+        vector<int> todo;
         for (int i = 0; i < m; i++)
-            for (int j = i + 1; j < m; j++)
-                for (int k = j + 1; k < m; k++)
-                    if (big[i][j] && big[j][k] && big[i][k]) {
-                        int tridx = m * m * i + m * j + k;
-                        e_to_tri[m * i + j].insert(tridx);
-                        e_to_tri[m * j + k].insert(tridx);
-                        e_to_tri[m * i + k].insert(tridx);
-                        tri_to_e[tridx].insert(m * i + j);
-                        tri_to_e[tridx].insert(m * j + k);
-                        tri_to_e[tridx].insert(m * i + k);
-                        to_consider.insert(m * i + j);
-                        to_consider.insert(m * j + k);
-                        to_consider.insert(m * i + k);
-                    }
+            if (accumulate(big[i], big[i] + m, 0) > 1) todo.push_back(i);
+        for (int _i = 0, i = todo[0]; _i < todo.size() - 2; i = todo[++_i])
+            for (int _j = _i + 1, j = todo[_i + 1]; _j < todo.size() - 1;
+                 j = todo[++_j])
+                if (big[i][j])
+                    for (int _k = _j + 1, k = todo[_j + 1]; _k < todo.size();
+                         k = todo[++_k])
+                        if (big[j][k] && big[i][k]) {
+                            int tridx = m * m * i + m * j + k;
+                            e_to_tri[m * i + j].insert(tridx);
+                            e_to_tri[m * j + k].insert(tridx);
+                            e_to_tri[m * i + k].insert(tridx);
+                            tri_to_e[tridx].insert(m * i + j);
+                            tri_to_e[tridx].insert(m * j + k);
+                            tri_to_e[tridx].insert(m * i + k);
+                            to_consider.insert(m * i + j);
+                            to_consider.insert(m * j + k);
+                            to_consider.insert(m * i + k);
+                        }
         while (to_consider.size()) {
             pair<int, int> best = {1, 0};
             for (int i : to_consider) best = max(best, {e_to_tri[i].size(), i});
@@ -313,37 +326,6 @@ int main() {
             for (int j = i + 1; j < m; j++)
                 if (!bad[m * i + j] && big[i][j]) ans[i][j] = ans[j][i] = 1;
 
-        for (int i = 0; i < m; i++)
-            for (int j = 0; j < m; j++) cout << ans[i][j] << " \n"[j == m - 1];
-        return 0;
-    } else if (n == 4 && m == 645) {
-        vector<int> shuf(m);
-        iota(shuf.begin(), shuf.end(), 0);
-        random_shuffle(shuf.begin(), shuf.end());
-        for (int i : shuf) {
-            for (int j : graph[i]) {
-                if (ans[i][j]) continue;
-                bool tri = false;
-                for (int k = 0; k < m; k++) tri |= (ans[i][k] && ans[j][k]);
-                if (!tri) {
-                    ans[i][j] = ans[j][i] = 1;
-                    deg[i]++, deg[j]++;
-                }
-            }
-        }
-        random_shuffle(shuf.begin(), shuf.end());
-        for (int i : shuf) {
-            for (int j : graph[i]) {
-                if (ans[i][j]) continue;
-                bool tri = false;
-                for (int k = 0; k < m; k++)
-                    tri |= (ans[i][k] && ans[j][k] && deg[k] > 2);
-                if (!tri) {
-                    ans[i][j] = ans[j][i] = 1;
-                    deg[i]++, deg[j]++;
-                }
-            }
-        }
         for (int i = 0; i < m; i++)
             for (int j = 0; j < m; j++) cout << ans[i][j] << " \n"[j == m - 1];
         return 0;
