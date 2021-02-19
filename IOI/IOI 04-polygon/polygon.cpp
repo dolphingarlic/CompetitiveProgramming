@@ -216,7 +216,7 @@ int main() {
     for (int i = 0; i < n; i++) cin >> p[i].x >> p[i].y;
     p[n] = p[0];
     cin >> t;
-    cout << "#FILE polygon " << t << '\n';
+    // cout << "#FILE polygon " << t << '\n';
 
     for (int i = 0; i < n; i++) {
         g[i] = abs(__gcd(p[i + 1].x - p[i].x, p[i + 1].y - p[i].y));
