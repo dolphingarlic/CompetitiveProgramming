@@ -22,7 +22,6 @@ again, so we pop it from the stack
 */
 
 #include <bits/stdc++.h>
-#define FOR(i, x, y) for (int i = x; i < y; i++)
 using namespace std;
 
 int a[2000000], le[2000000], gr[2000000];
@@ -33,12 +32,12 @@ int main() {
     int n;
     map<int, stack<int>> mp;
     cin >> n;
-    FOR(i, 0, n) {
+    for (int i = 0; i < n; i++) {
         cin >> a[i];
         mp[a[i] - i].push(i);
     }
     stack<int> stck;
-    FOR(i, 0, n) {
+    for (int i = 0; i < n; i++) {
         while (stck.size() && a[stck.top()] < a[i]) stck.pop();
         if (stck.size())
             gr[i] = stck.top();

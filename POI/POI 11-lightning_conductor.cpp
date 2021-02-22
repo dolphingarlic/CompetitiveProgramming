@@ -1,8 +1,4 @@
 #include <bits/stdc++.h>
-#pragma GCC optimize("O3")
-#define FOR(i, x, y) for (ll i = x; i < y; i++)
-#define MOD 1000000007
-typedef long long ll;
 using namespace std;
 
 int n, h[500000], dp1[500000], dp2[500000];
@@ -14,7 +10,7 @@ double slope(int j, int k) {
 
 void solve(int dp[]) {
     deque<int> q;
-    FOR(i, 0, n) {
+    for (int i = 0; i < n; i++) {
         // Keep the queue monotone
         if (!i || h[q.back()] < h[i]) {
             while ((q.size() > 0 &&
@@ -33,12 +29,13 @@ int main() {
     iostream::sync_with_stdio(false);
     cin.tie(0);
     cin >> n;
-    FOR(i, 0, n) cin >> h[i];
+    for (int i = 0; i < n; i++) cin >> h[i];
 
     solve(dp1);
-    FOR(i, 0, n / 2) swap(h[i], h[n - 1 - i]);
+    for (int i = 0; i < n / 2; i++) swap(h[i], h[n - 1 - i]);
     solve(dp2);
 
-    FOR(i, 0, n) cout << max(dp1[i], dp2[n - 1 - i]) - h[n - 1 - i] << '\n';
+    for (int i = 0; i < n; i++)
+        cout << max(dp1[i], dp2[n - 1 - i]) - h[n - 1 - i] << '\n';
     return 0;
 }
