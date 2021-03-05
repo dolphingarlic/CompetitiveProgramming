@@ -1,27 +1,48 @@
+/*
+Baltic 2018 Genetics
+- We'll use hashing to solve this problem :D
+- First, assign each clone a random number rnd[i]
+- For each candidate, instead of checking it against all other clones individually,
+  check it against all other clones simultaneously in O(M)
+- Let D[j][c] = sum(rnd[i] : A[i][j] == c)
+- Compute the "hash" of a candidate as sum(sum(D[j][c] : A[i][j] != c))
+- If another clone x differs in exactly K places, it'll contribute K * rnd[x] to the hash
+- This means that we'd expect the hash to be equal to K * (sum(rnd[x]) - rnd[i])
+  if the current candidate is the answer; otherwise, they are not equal
+- Using a 64-bit integer to store the hashes, we expect the probability of a collision
+  to be 2^(-64)
+- Complexity: O(NM)
+*/
+
 #include <bits/stdc++.h>
-#define FOR(i, x, y) for (int i = x; i < y; i++)
 typedef long long ll;
 using namespace std;
 
-bitset<4100> is[26][4100];
-bool not_villain[4100];
+string s[4100];
+ll rnd[4100], tot, sm[4100][4];
+
+int idx(char c) {
+    if (c == 'A') return 0;
+    if (c == 'G') return 1;
+    if (c == 'C') return 2;
+    return 3;
+}
 
 int main() {
-    ios_base::sync_with_stdio(0);
-    cin.tie(0);
+    cin.tie(0)->sync_with_stdio(0);
     int n, m, k;
     cin >> n >> m >> k;
-    k = m - k;
-    FOR(i, 0, n) {
-        cin.ignore();
-        FOR(j, 0, m) is[cin.get() - 'A'][i][j] = 1;
-        FOR(j, 0, i) {
-            int cnt = ((is[0][i] & is[0][j]) | (is[2][i] & is[2][j]) | (is[6][i] & is[6][j]) | (is[19][i] & is[19][j])).count();
-            not_villain[i] |= (cnt != k);
-            not_villain[j] |= (cnt != k);
-        }
+    for (int i = 0; i < n; i++) {
+        rnd[i] = rand();
+        tot += rnd[i];
+        cin >> s[i];
+        for (int j = 0; j < m; j++) sm[j][idx(s[i][j])] += rnd[i];
     }
 
-    FOR(i, 0, n) if (!not_villain[i]) cout << i + 1 << '\n';
+    for (int i = 0; i < n; i++) {
+        ll hsh = 0;
+        for (int j = 0; j < m; j++) hsh += tot - sm[j][idx(s[i][j])];
+        if (hsh == k * (tot - rnd[i])) return cout << i + 1, 0;
+    }
     return 0;
 }
