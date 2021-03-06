@@ -41,12 +41,13 @@ using namespace std;
 
 const ll INF = 1e16;
 
+ll p[1000000], half_plane[4];
+pair<ll, int> ord1[1000000], ord2[1000000];
+
 ll find_shortcut(int n, vector<int> l, vector<int> d, int c) {
-    vector<ll> p(n, 0);
     for (int i = 1; i < n; i++) p[i] = p[i - 1] + l[i - 1];
 
     // Order by d[i] + p[i] and d[i] - p[i]
-    vector<pair<ll, int>> ord1(n), ord2(n);
     for (int i = 0; i < n; i++)
         ord1[i] = {d[i] + p[i], i}, ord2[i] = {d[i] - p[i], i};
     sort(ord1, ord1 + n);
@@ -58,7 +59,7 @@ ll find_shortcut(int n, vector<int> l, vector<int> d, int c) {
         ll mid = ans + i;
 
         // Reset maximums and minimums
-        vector<ll> half_plane(4);
+        for (int j = 0; j < 4; j++) half_plane[j] = -INF;
         ll mx1 = -INF, mx2 = -INF, smx1 = -INF, smx2 = -INF;
 
         for (int i = 0, j = n - 1; i < n; i++) {
