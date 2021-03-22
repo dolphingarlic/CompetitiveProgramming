@@ -1,3 +1,8 @@
+/*
+CEOI 2014 Question
+- Sperner's theorem
+*/
+
 #include "question.h"
 using namespace std;
 
