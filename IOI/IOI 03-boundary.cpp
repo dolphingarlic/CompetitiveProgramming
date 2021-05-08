@@ -1,5 +1,4 @@
 #include <bits/stdc++.h>
-#define FOR(i, x, y) for (int i = x; i < y; i++)
 #define x first
 #define y second
 typedef long long ll;
@@ -8,67 +7,95 @@ using namespace std;
 const double PI = 4 * atan(1);
 
 struct Event {
-    short type, id;
-    pair<ll, ll> loc;
+	short type, id;
+	pair<ll, ll> loc;
 };
 
 pair<ll, ll> origin, polygon[22];
-bool cmp(pair<ll, ll> a, pair<ll, ll> b) {
-    return (a.x - origin.x) * (b.y - origin.y) < (a.y - origin.y) * (b.x - origin.x);
+
+// Cross product
+ll cross(pair<ll, ll> a, pair<ll, ll> b) {
+	return (a.y - origin.y) * (b.x - origin.x) - (a.x - origin.x) * (b.y - origin.y);
 }
+
+// Which half of the plane some point lies in
+int half(pair<ll, ll> p) {
+	if (p.x != origin.x) return (p.x < origin.x) - (p.x > origin.x);
+	return (p.y < origin.y) - (p.y > origin.y);
+}
+
+// Custom comparator to sort by bearing
 bool operator<(Event a, Event b) {
-    double angle_a = atan2(a.loc.x - origin.x, a.loc.y - origin.y);
-    double angle_b = atan2(b.loc.x - origin.x, b.loc.y - origin.y);
-    if (angle_a < 0) angle_a += 2 * PI;
-    if (angle_b < 0) angle_b += 2 * PI;
-
-    if (angle_a == angle_b) return a.type > b.type;
-    return angle_a < angle_b;
+	int ah = half(a.loc), bh = half(b.loc);
+	if (ah == bh) {
+		ll c = cross(a.loc, b.loc);
+		if (c == 0) return a.type > b.type;
+		return c > 0;
+	}
+	return ah < bh;
 }
 
-vector<Event> events, walls;
+// Generates the next fence post in clockwise order
+Event get_next_post(Event curr, int n) {
+	if (curr.loc.x == n) {
+		if (curr.loc.y) return {0, 0, {n, curr.loc.y - 1}};
+		return {0, 0, {n - 1, 0}};
+	} else if (!curr.loc.x) {
+		if (curr.loc.y != n) return {0, 0, {0, curr.loc.y + 1}};
+		return {0, 0, {1, n}};
+	} else if (curr.loc.y == n) {
+		if (curr.loc.x != n) return {0, 0, {curr.loc.x + 1, n}};
+		return {0, 0, {n, n - 1}};
+	} else {
+		if (curr.loc.x) return {0, 0, {curr.loc.x - 1, 0}};
+		return {0, 0, {0, 1}};
+	}
+}
+
+vector<Event> events;
 bool before[44444];
 
 int main() {
-    ios_base::sync_with_stdio(0);
-    cin.tie(0);
-    int n, r;
-    cin >> n >> r >> origin.x >> origin.y;
+	cin.tie(0)->sync_with_stdio(0);
+	int n, r;
+	cin >> n >> r >> origin.x >> origin.y;
 
-    FOR(i, 0, r) {
-        int m;
-        cin >> m;
-        FOR(j, 0, m) cin >> polygon[j].x >> polygon[j].y;
-        sort(polygon, polygon + m, cmp);
-        events.push_back({1, i, polygon[0]});
-        events.push_back({-1, i, polygon[m - 1]});
-    }
-    sort(events.begin(), events.end());
+	for (int i = 0; i < r; i++) {
+		int m;
+		cin >> m;
+		for (int j = 0; j < m; j++) cin >> polygon[j].x >> polygon[j].y;
+		// Sort the polygon's vertices to find the 2 "tangents" from the origin
+		sort(polygon, polygon + m, [](pair<ll, ll> a, pair<ll, ll> b) {
+			return cross(a, b) > 0;
+		});
+		events.push_back({1, i, polygon[0]});
+		events.push_back({-1, i, polygon[m - 1]});
+	}
+	sort(events.begin(), events.end());
 
-    FOR(i, origin.x, n) walls.push_back({0, 0, {i, n}});
-    FOR(i, 0, n) walls.push_back({0, 0, {n, n - i}});
-    FOR(i, 0, n) walls.push_back({0, 0, {n - i, 0}});
-    FOR(i, 0, n) walls.push_back({0, 0, {0, i}});
-    FOR(i, 0, origin.x) walls.push_back({0, 0, {i, n}});
+	int active = 0;
+	// Do an initial sweep to handle rocks containing the ray with bearing 0
+	// This way, `active` won't be messed up
+	for (Event i : events) {
+		if (i.type == 1) before[i.id] = true;
+		if (i.type == -1 && !before[i.id]) active++;
+	}
 
-    int active = 0;
-    for (Event i : events) {
-        if (i.type == 1) before[i.id] = true;
-        if (i.type == -1 && !before[i.id]) active++;
-    }
+	int ans = 0, ptr = 0;
+	Event curr_post = {0, 0, {origin.x, n}};
+	for (Event i : events) {
+		while (ptr != 4 * n && curr_post < i) {
+			// If there are no rocks that our current ray intersects...
+			if (!active) ans++;
+			ptr++;
+			curr_post = get_next_post(curr_post, n);
+		}
 
-    int ans = 0, ptr = 0;
-    for (Event i : events) {
-        while (ptr != 4 * n && walls[ptr] < i) {
-            if (!active) ans++;
-            ptr++;
-        }
-        
-        if (i.type == 1) active++;
-        else active--;
-    }
-    if (!active) ans += 4 * n - ptr;
+		if (i.type == 1) active++;
+		else active--;
+	}
+	if (!active) ans += 4 * n - ptr;
 
-    cout << ans;
-    return 0;
+	cout << ans;
+	return 0;
 }
