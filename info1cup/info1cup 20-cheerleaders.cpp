@@ -11,7 +11,7 @@ InfO(1) Cup 2020 Cheerleaders
       it being 0 or 1
     - Then we set M to the smaller of the two potential values
     - To speed this up, we use merge sort and sort in-place
-- Complexity: O(N log^2 N)
+- Complexity: O(N^2 * 2^N)
 */
 
 #include <bits/stdc++.h>
