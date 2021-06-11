@@ -1,5 +1,5 @@
 /*
-Baltic 2021 Books
+Baltic 2021 A Difficult(y) Choice
 - Similar to IOI 2016 Molecules
 - First, binary search for the least book with x[i] > A
 - Next, get the values of the K least books and the K greatest
